@@ -1,0 +1,20 @@
+{
+  "name": "flyeralarm/reseller-api",
+  "description": "PHP Binding fot the FLYERALARM Reseller API.",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "FLYERALARM digital GmbH"
+    }
+  ],
+  "autoload": {
+    "classmap": ["src/"],
+    "psr-4": { "flyeralarm\\ResellerApi\\": "src/" }
+  },
+  "autoload-dev": {
+    "classmap": ["src/","tests/"]
+  },
+  "require": {
+    "php": ">= 5.6.0"
+  }
+}

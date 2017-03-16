@@ -395,7 +395,7 @@ class Api
     {
         try {
             $this->login();
-            $this->addProductToCart($order->getProduct()->getQuantityId());
+            $this->addProductToCart($order->getQuantityId());
             $this->addShippingTypeToProduct($order->getShippingTypeId());
             $this->addProductOptions($order->getProductOptionsArray());
             $this->addShippingOptions($order->getAddressHandling(), $order->getAddressList(),

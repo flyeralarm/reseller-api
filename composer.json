@@ -1,6 +1,6 @@
 {
   "name": "flyeralarm/reseller-api",
-  "description": "PHP Binding fot the FLYERALARM Reseller API.",
+  "description": "PHP Binding for the FLYERALARM Reseller API.",
   "license": "proprietary",
   "authors": [
     {

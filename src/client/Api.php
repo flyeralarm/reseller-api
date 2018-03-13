@@ -71,6 +71,12 @@ class Api
         return $this;
     }
 
+    public function __destruct(){
+
+        return $this->api_client->logout();
+
+    }
+
     /**
      * @return bool
      */
@@ -96,7 +102,7 @@ class Api
     private function logout()
     {
 
-        return $this->api_client->logout();
+        //return $this->api_client->logout();
 
     }
 
@@ -298,16 +304,17 @@ class Api
     }
 
     /**
-     * @param Product $product
+     * @param Order $order
      * @return OptionList
      * @throws \flyeralarm\ResellerApi\exception\OptionArray
      */
-    public function getAvailableProductOptions(Product $product)
+    public function getAvailableProductOptions(Order $order)
     {
 
         try {
             $this->login();
-            $this->addProductToCart($product->getQuantityId());
+            $this->addProductToCart($order->getQuantityId());
+            $this->addShippingTypeToProduct($order->getShippingTypeId());
             $array = $this->api_client->getAvailableProductOptions();
             $this->logout();
         } catch (\Exception $e) {
@@ -460,12 +467,21 @@ class Api
      * @param string $orderItemId
      * @return mixed
      */
-    public function createUploadTarget($fileName, $fileSize, $orderId, $orderItemId = null)
+    public function createUploadTarget($fileName, $fileSize, $orderId, $orderItemId = null, $hasEmptyRearPage = false)
     {
 
         if ($orderItemId === null) {
             $orderItemId = $orderId . 'X01';
         }
+
+        $hasEmptyRearPage = (bool) $hasEmptyRearPage;
+
+        $hasEmptyRearPage_string = '"hasEmptyRearPage": false';
+
+        if($hasEmptyRearPage) {
+            $hasEmptyRearPage_string = '"hasEmptyRearPage": true';
+        }
+
 
 
         $getData_url = $this->api_rest_base . '/v1/sales-orders/' . $orderId . '/items/' . $orderItemId . '/printing-data';
@@ -476,7 +492,7 @@ class Api
             'Content-Type: text/plain'
         );
 
-        $getData_post = '{"fileName": "' . $fileName . '", "fileSize": ' . $fileSize . ', "hasEmptyRearPage": false}';
+        $getData_post = '{"fileName": "' . $fileName . '", "fileSize": ' . $fileSize . ', '.$hasEmptyRearPage_string.'}';
 
         // Start the curl magic:
         //var_dump($getData_headers);

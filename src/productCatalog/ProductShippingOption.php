@@ -90,7 +90,7 @@ class ProductShippingOption
      */
     public function getBruttoPrice()
     {
-        return $this->getPrice();
+        return $this->getPriceWithTax();
     }
 
     /**
@@ -106,7 +106,7 @@ class ProductShippingOption
      */
     public function getNettoPrice()
     {
-        return $this->getPriceWithTax();
+        return $this->getPrice();
     }
 
     /**

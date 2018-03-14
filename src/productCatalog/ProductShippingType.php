@@ -122,7 +122,7 @@ class ProductShippingType
     public function __toString()
     {
         $string = ' [ ST#' . $this->id . '|' . $this->name . " ->\n";
-        $string = $string . '  price:' . (string)$this->nettoPrice . "( excl.:" . (string)$this->bruttoPrice . ")\n";
+        $string = $string . '  price:' . (string)$this->bruttoPrice . "( excl.:" . (string)$this->nettoPrice . ")\n";
         $string = $string . '  from:' . (string)$this->from . " to:" . (string)$this->to . "\n";
         $string = $string . " ]\n";
 

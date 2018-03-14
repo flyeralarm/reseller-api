@@ -599,7 +599,7 @@ class Loader
         }
 
         $st = $this->factory->createShippingType($array['_id'], $array['_name'], $array['_from'], $array['_to'],
-            $array['_deadline'], $array['_price_netto'], $array['_price_brutto']);
+            $array['_deadline'], $array['_price_brutto'], $array['_price_netto']);
 
         return $st;
 

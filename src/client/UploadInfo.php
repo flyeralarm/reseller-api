@@ -37,7 +37,8 @@ class UploadInfo
         return array(
             'dataTransferType' => (string)$this->type,
             'dataTransferTime' => (string)$this->datum,
-            'dataTransferText' => (string)$this->text
+            'dataTransferText' => (string)$this->text,
+            'referenceText' => (string)$this->text,
         );
     }
 

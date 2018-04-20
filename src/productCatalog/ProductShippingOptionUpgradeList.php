@@ -10,6 +10,7 @@ class ProductShippingOptionUpgradeList extends AbstractList
 
     /**
      * @param mixed $item
+     * @return null
      * @throws AddObjectTypeException
      */
     public function add($item)
@@ -18,24 +19,6 @@ class ProductShippingOptionUpgradeList extends AbstractList
             throw new AddObjectTypeException('ShippingUpgradeList only accepts objects of type ShippingUpgrade.', 5089);
         }
         $this->elements[] = $item;
-    }
-
-    /**
-     * @param $name
-     * @return ProductShippingOptionUpgrade|null
-     */
-    public function getByName($name)
-    {
-        foreach ($this->elements as $value) {
-            /**
-             * @var $value ShippingUpgrade
-             */
-            if (strtolower($value->getName()) == strtolower($name)) {
-                return $value;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -49,6 +32,24 @@ class ProductShippingOptionUpgradeList extends AbstractList
              * @var $value ShippingUpgrade
              */
             if ($value->getId() == $id) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $name
+     * @return ProductShippingOptionUpgrade|null
+     */
+    public function getByName($name)
+    {
+        foreach ($this->elements as $value) {
+            /**
+             * @var $value ShippingUpgrade
+             */
+            if (strtolower($value->getName()) == strtolower($name)) {
                 return $value;
             }
         }
@@ -75,11 +76,10 @@ class ProductShippingOptionUpgradeList extends AbstractList
     {
         $string = "  { \n";
         foreach ($this as $value) {
-            $string = $string . "   " . (string)$value . " \n";
+            $string = $string . "   " . (string) $value . " \n";
         }
         $string = $string . '  }';
 
         return $string;
     }
-
 }

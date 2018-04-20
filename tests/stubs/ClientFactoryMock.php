@@ -2,14 +2,10 @@
 
 use flyeralarm\ResellerApi\client\Factory as ClientFactory;
 
-
 class ClientFactoryMock extends ClientFactory
 {
-
-
     protected function createSoapClient()
     {
-
         $soap_client = new SoapClientMock(
             $this->config->getWsdlURI(),
             array('trace' => true)
@@ -17,6 +13,4 @@ class ClientFactoryMock extends ClientFactory
 
         return $soap_client;
     }
-
-
 }

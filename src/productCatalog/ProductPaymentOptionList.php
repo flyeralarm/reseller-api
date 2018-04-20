@@ -10,6 +10,7 @@ class ProductPaymentOptionList extends AbstractList
 
     /**
      * @param mixed $item
+     * @return null
      * @throws AddObjectTypeException
      */
     public function add($item)
@@ -18,6 +19,18 @@ class ProductPaymentOptionList extends AbstractList
             throw new AddObjectTypeException('PaymentOptionList only accepts objects of type PaymentOption.', 5086);
         }
         $this->elements[] = $item;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasValues()
+    {
+        if (count($this->elements)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -57,30 +70,16 @@ class ProductPaymentOptionList extends AbstractList
     }
 
     /**
-     * @return bool
-     */
-    public function hasValues()
-    {
-        if (count($this->elements)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
         $string = "  { \n";
         foreach ($this as $value) {
-            $string = $string . "   " . (string)$value . " \n";
+            $string = $string . "   " . (string) $value . " \n";
         }
         $string = $string . '  }';
 
         return $string;
     }
-
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace flyeralarm\ResellerApi\productCatalog;
 
 use flyeralarm\ResellerApi\lib\AbstractList as AbstractList;
@@ -7,17 +8,19 @@ use flyeralarm\ResellerApi\exception\AddObjectType as AddObjectTypeException;
 
 class ProductAttributePossibleValuesList extends AbstractList
 {
-
     /**
      * Add an Item to the list.
-     * @param AttributeValue $item
-     * @return void
+     *
+     * @param  AttributeValue $item
+     * @throws AddObjectTypeException
      */
     public function add($item)
     {
         if (!$item instanceof AttributeValue) {
-            throw new AddObjectTypeException('AttributePossibleValuesList only accepts objects of type AttributeValue.',
-                5083);
+            throw new AddObjectTypeException(
+                'AttributePossibleValuesList only accepts objects of type AttributeValue.',
+                5083
+            );
         }
         $this->elements[] = $item;
     }
@@ -59,11 +62,10 @@ class ProductAttributePossibleValuesList extends AbstractList
     {
         $string = "  { \n";
         foreach ($this as $value) {
-            $string = $string . "   " . (string)$value . " \n";
+            $string = $string . "   " . (string) $value . " \n";
         }
         $string = $string . '  }';
 
         return $string;
     }
-
 }

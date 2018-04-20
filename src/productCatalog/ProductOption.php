@@ -89,12 +89,10 @@ class ProductOption
     public function __toString()
     {
         $string = ' [ O#' . $this->optionId . '|' . $this->name . " ->\n";
-        $string = $string . '  current value:' . (string)$this->selection . "\n";
-        $string = $string . "  possible values: \n" . (string)$this->possibleValues . "\n";
+        $string = $string . '  current value:' . (string) $this->selection . "\n";
+        $string = $string . "  possible values: \n" . (string) $this->possibleValues . "\n";
         $string = $string . " ]\n";
 
         return $string;
     }
-
-
 }

@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\exception;
 
-
 class PaymentOptionArray extends DataStructure
 {
 
@@ -12,6 +11,5 @@ class PaymentOptionArray extends DataStructure
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

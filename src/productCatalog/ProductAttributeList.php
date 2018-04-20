@@ -57,7 +57,7 @@ class ProductAttributeList extends AbstractList
     {
         $string = "{ AL ->\n";
         foreach ($this->elements as $value) {
-            $string = $string . (string)$value;
+            $string = $string . (string) $value;
         }
         $string = $string . '}';
 

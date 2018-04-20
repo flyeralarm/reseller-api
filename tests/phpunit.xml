@@ -8,6 +8,11 @@
          verbose="true">
 
     <filter>
+        <blacklist>
+            <directory>reports</directory>
+            <directory>stubs</directory>
+        </blacklist>
+
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../src</directory>
         </whitelist>

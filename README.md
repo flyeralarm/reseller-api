@@ -4,6 +4,13 @@ The purpose of this repository is to offer a PHP Binding for the FLYERALARM Rese
 
 Please take a look at our examples repository to see how it should be used.
 
+### Setup
+
+- composer needs to be installed https://getcomposer.org
+- run composer update
+- run "make all" to verify
+
+Notes: PHPUnit Version ranges currently from 5-8 to Support PHP 5.6 and all above versions
 
 ### Error Codes
 

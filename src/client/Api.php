@@ -1,4 +1,5 @@
 <?php
+
 namespace flyeralarm\ResellerApi\client;
 
 use flyeralarm\ResellerApi\productCatalog\Loader as ProductLoader;
@@ -8,14 +9,7 @@ use flyeralarm\ResellerApi\productCatalog\ProductAttribute as ProductAttribute;
 use flyeralarm\ResellerApi\productCatalog\ProductAttributeValue as ProductAttributeValue;
 use flyeralarm\ResellerApi\productCatalog\Product as Product;
 use flyeralarm\ResellerApi\productCatalog\ProductOptionList as OptionList;
-use flyeralarm\ResellerApi\productCatalog\ProductOption as Option;
-use flyeralarm\ResellerApi\productCatalog\ProductOptionValue as OptionValue;
 use flyeralarm\ResellerApi\client\AddressList as AddressList;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingType as ShippingType;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingOption as ShippingOption;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingOptionUpgrade as ShippingUpgrade;
-use flyeralarm\ResellerApi\productCatalog\ProductPaymentOption as PaymentOption;
-use flyeralarm\ResellerApi\client\UploadInfo as UploadInfo;
 use flyeralarm\ResellerApi\exception\SoapCall as SoapCallException;
 use flyeralarm\ResellerApi\exception\LoginFail as LoginFailException;
 
@@ -39,7 +33,7 @@ class Api
 
     private $reseller_password = null;
 
-    private $api_cookies = array();
+    private $api_cookies = [];
 
     private $api_sequence_check_login = false;
 
@@ -63,7 +57,7 @@ class Api
         $this->reseller_password = $reseller_password;
 
         $this->api_rest_base = $rest_base;
-        $this->api_rest_ssl_check = (bool)$ssl_check;
+        $this->api_rest_ssl_check = (bool) $ssl_check;
 
         $this->api_client = $client;
         $this->product_loader = $product_loader;
@@ -71,20 +65,19 @@ class Api
         return $this;
     }
 
-    public function __destruct(){
-
+    public function __destruct()
+    {
         return $this->api_client->logout();
-
     }
 
     /**
      * @return bool
+     * @throws LoginFailException
      */
     private function login()
     {
         try {
-            if (false === $this->api_client->loggedIn()) {
-
+            if ($this->api_client->loggedIn() === false) {
                 $result = $this->api_client->login($this->reseller_email, $this->reseller_password);
 
                 return $result;
@@ -97,18 +90,9 @@ class Api
     }
 
     /**
-     * @return mixed
-     */
-    private function logout()
-    {
-
-        //return $this->api_client->logout();
-
-    }
-
-    /**
      * Returns the current login status
-     * @return mixed
+     *
+     * @return bool
      */
     public function loggedInTest()
     {
@@ -119,21 +103,20 @@ class Api
 
     /**
      * Returns a List of all ProductGroups
+     *
      * @return \flyeralarm\ResellerApi\productCatalog\GroupList
-     * @throws \flyeralarm\ResellerApi\exception\ProductGroupListArray
+     * @throws SoapCallException
      */
     public function getProductGroupIds()
     {
         try {
             $this->login();
             $array = $this->api_client->getProductGroupIds();
-            $this->logout();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to load Productgroups.", 5111, $e);
         }
 
         return $this->product_loader->loadGroupListFromArray($array);
-
     }
 
     /**
@@ -142,7 +125,7 @@ class Api
      */
     private function getSoapAttributeArray(ProductAttributeList $attributes)
     {
-        $array = array();
+        $array = [];
         /**
          * @var $attr ProductAttribute
          */
@@ -158,17 +141,15 @@ class Api
     /**
      * @param $groupId int
      * @return ProductAttributeList
-     * @throws \flyeralarm\ResellerApi\exception\AttributeArray
+     * @throws SoapCallException
      */
     public function getProductAttributesByProductGroupId($groupId)
     {
-
         try {
             $this->login();
             $array = $this->api_client->getProductAttributesByGroupId(
-                (int)$groupId
+                (int) $groupId
             );
-            $this->logout();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to load ProductAttributes.", 5112, $e);
         }
@@ -184,9 +165,7 @@ class Api
      */
     public function getProductAttributesByProductGroup(ProductGroup $group)
     {
-
-
-        $attributeList = $this->getProductAttributesByProductGroupId((int)$group->getProductGroupId());
+        $attributeList = $this->getProductAttributesByProductGroupId((int) $group->getProductGroupId());
 
         return $attributeList;
     }
@@ -195,10 +174,10 @@ class Api
      * @param ProductGroup $group
      * @param ProductAttributeList $attributes
      * @return \flyeralarm\ResellerApi\productCatalog\AttributeList
+     * @throws SoapCallException
      */
     public function getAvailableAttributesByPreselectedAttributes(ProductGroup $group, ProductAttributeList $attributes)
     {
-
         $arrayAttributes = $this->getSoapAttributeArray($attributes);
 
         try {
@@ -207,24 +186,27 @@ class Api
                 $group->getProductGroupId(),
                 $arrayAttributes
             );
-            $this->logout();
         } catch (\Exception $e) {
-            throw new SoapCallException("FLYERALARM API Call: Unable to load available Attributes by preselected Attributes.",
-                5113, $e);
+            throw new SoapCallException(
+                "FLYERALARM API Call: Unable to load available Attributes by preselected Attributes.",
+                5113,
+                $e
+            );
         }
 
-        $attributeList = $this->product_loader->loadAttributeListFromArrayWithPreselectedAttributes($array,
-            $attributes);
+        $attributeList = $this->product_loader->loadAttributeListFromArrayWithPreselectedAttributes(
+            $array,
+            $attributes
+        );
 
         return $attributeList;
-
     }
 
     /**
      * @param ProductGroup $group
      * @param ProductAttributeList $attributes
      * @return \flyeralarm\ResellerApi\productCatalog\ProductQuantityOptionList
-     * @throws \flyeralarm\ResellerApi\exception\QuantityOptionListArray
+     * @throws SoapCallException
      */
     public function getAvailableQuantitiesByAttributes(ProductGroup $group, ProductAttributeList $attributes)
     {
@@ -237,10 +219,12 @@ class Api
                 $group->getProductGroupId(),
                 $array
             );
-            $this->logout();
         } catch (\Exception $e) {
-            throw new SoapCallException("FLYERALARM API Call: Unable to load available Quantities by Attributes.", 5114,
-                $e);
+            throw new SoapCallException(
+                "FLYERALARM API Call: Unable to load available Quantities by Attributes.",
+                5114,
+                $e
+            );
         }
 
         $quantities = $this->product_loader->loadQuantityOptionListFromArray($quantitiesArray);
@@ -251,72 +235,65 @@ class Api
     /**
      * @param $quantityId
      * @return Product
-     * @throws \flyeralarm\ResellerApi\exception\AttributeValueArray
+     * @throws SoapCallException
      */
     public function findProductByQuantityId($quantityId)
     {
 
         try {
             $this->login();
-            $array = $this->api_client->findProductByQuantityId((int)$quantityId);
-            $this->logout();
+            $array = $this->api_client->findProductByQuantityId((int) $quantityId);
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to find Product by QuantityId.", 5115, $e);
         }
 
-        $product = $this->product_loader->loadProductFromArray((int)$quantityId, $array);
+        $product = $this->product_loader->loadProductFromArray((int) $quantityId, $array);
 
         return $product;
     }
 
     /**
-     * @param Product $product
-     * @return mixed
+     * @param $quantityId
+     * @return bool
+     * @internal param Product $product
      */
     private function addProductToCart($quantityId)
     {
-
-        $result = $this->api_client->addProductToCart((int)$quantityId);
+        $result = $this->api_client->addProductToCart((int) $quantityId);
 
         return $result;
-
     }
 
     /**
      * @param Product $product
      * @return \flyeralarm\ResellerApi\productCatalog\ProductShippingTypeList
-     * @throws \flyeralarm\ResellerApi\exception\ShippingTypeArray
+     * @throws SoapCallException
      */
     public function getShippingTypeList(Product $product)
     {
-
         try {
             $this->login();
             $result = $this->addProductToCart($product->getQuantityId());
-            $this->logout();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get ShippingTypes.", 5116, $e);
         }
         $shippingOptionList = $this->product_loader->loadShippingTypeListFromArray($result);
 
         return $shippingOptionList;
-
     }
 
     /**
      * @param Order $order
      * @return OptionList
-     * @throws \flyeralarm\ResellerApi\exception\OptionArray
+     * @throws SoapCallException
      */
     public function getAvailableProductOptions(Order $order)
     {
-
         try {
             $this->login();
             $this->addProductToCart($order->getQuantityId());
             $this->addShippingTypeToProduct($order->getShippingTypeId());
             $array = $this->api_client->getAvailableProductOptions();
-            $this->logout();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get available ProductOptions.", 5117, $e);
         }
@@ -327,25 +304,25 @@ class Api
     }
 
     /**
-     * @param OptionList $options
-     * @return mixed
+     * @param $optionsArray
+     * @return bool
+     * @internal param OptionList $options
      */
     private function addProductOptions($optionsArray)
     {
-
         $return = $this->api_client->addProductOptions($optionsArray);
 
         return $return;
-
     }
 
     /**
-     * @param ShippingType $shippingType
-     * @return mixed
+     * @param $shippingTypeId
+     * @return bool
+     * @internal param ShippingType $shippingType
      */
     private function addShippingTypeToProduct($shippingTypeId)
     {
-        $return = $this->api_client->addShippingtypeToProduct((int)$shippingTypeId);
+        $return = $this->api_client->addShippingtypeToProduct((int) $shippingTypeId);
 
         return $return;
     }
@@ -353,16 +330,14 @@ class Api
     /**
      * @param Order $order
      * @return \flyeralarm\ResellerApi\productCatalog\ProductShippingOptionList
-     * @throws \flyeralarm\ResellerApi\exception\ShippingOptionArray
+     * @throws SoapCallException
      */
     public function getAvailableShippingOptions(Order $order)
     {
-
         try {
             $this->login();
             $this->addProductToCart($order->getQuantityId());
             $return = $this->api_client->getAvailableShippingOptions();
-            $this->logout();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get available ShippingOptions.", 5118, $e);
         }
@@ -375,9 +350,11 @@ class Api
     /**
      * @param $senderType
      * @param AddressList $addressList
-     * @param ShippingOption $shippingOption
-     * @param ShippingUpgrade $shippingUpgrade
-     * @return mixed
+     * @param $shippingOptionId
+     * @param null $shipping_upgrade_id
+     * @return bool
+     * @internal param ShippingOption $shippingOption
+     * @internal param ShippingUpgrade $shippingUpgrade
      */
     private function addShippingOptions(
         $senderType,
@@ -385,10 +362,12 @@ class Api
         $shippingOptionId,
         $shipping_upgrade_id = null
     ) {
-
-
-        $result = $this->api_client->addShippingOptions($senderType, $addressList->getArray(), $shippingOptionId,
-            $shipping_upgrade_id);
+        $result = $this->api_client->addShippingOptions(
+            $senderType,
+            $addressList->getArray(),
+            $shippingOptionId,
+            $shipping_upgrade_id
+        );
 
         return $result;
     }
@@ -396,7 +375,7 @@ class Api
     /**
      * @param Order $order
      * @return \flyeralarm\ResellerApi\productCatalog\ProductPaymentOptionList
-     * @throws \flyeralarm\ResellerApi\exception\PaymentOptionArray
+     * @throws SoapCallException
      */
     public function getAvailablePaymentOptions(Order $order)
     {
@@ -405,10 +384,13 @@ class Api
             $this->addProductToCart($order->getQuantityId());
             $this->addShippingTypeToProduct($order->getShippingTypeId());
             $this->addProductOptions($order->getProductOptionsArray());
-            $this->addShippingOptions($order->getAddressHandling(), $order->getAddressList(),
-                $order->getShippingOptionId(), $order->getShippingUpgradeId());
+            $this->addShippingOptions(
+                $order->getAddressHandling(),
+                $order->getAddressList(),
+                $order->getShippingOptionId(),
+                $order->getShippingUpgradeId()
+            );
             $array = $this->api_client->getAvailablePaymentOptions();
-            $this->logout();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get available PaymentOptions.", 5119, $e);
         }
@@ -420,22 +402,23 @@ class Api
 
     /**
      * @param Order $order
-     * @return mixed
+     * @return bool
+     * @throws SoapCallException
      */
     public function sendFullOrder(Order $order)
     {
-
         try {
             $return = $this->api_client->sendFullOrder(
-                (string)$this->reseller_email, (string)$this->reseller_password, // User login data from config.
-                (int)$order->getQuantityId(),
-                (int)$order->getShippingTypeId(),
+                (string) $this->reseller_email,
+                (string) $this->reseller_password, // User login data from config.
+                (int) $order->getQuantityId(),
+                (int) $order->getShippingTypeId(),
                 $order->getProductOptionsArray(),
                 $order->getAddressList()->getArray(),
-                (int)$order->getShippingOptionId(),
+                (int) $order->getShippingOptionId(),
                 $order->getAddressHandling(),
                 $order->getShippingUpgradeId(),
-                (int)$order->getPaymentOptionId(),
+                (int) $order->getPaymentOptionId(),
                 $order->getUploadInfo()->getArray(),
                 $order->getResellerPrice(),
                 $order->getCustomWidth(),
@@ -450,12 +433,12 @@ class Api
 
     /**
      * @param $orderId
-     * @return mixed
+     * @return string
      */
     public function getOrderStatus($orderId)
     {
         $this->login();
-        $return = $this->api_client->getOrderStatus(array((string)$orderId));
+        $return = $this->api_client->getOrderStatus([(string) $orderId]);
 
         return $return;
     }
@@ -465,59 +448,60 @@ class Api
      * @param int $fileSize
      * @param string $orderId
      * @param string $orderItemId
-     * @return mixed
+     * @param bool $hasEmptyRearPage
+     * @return string
      */
     public function createUploadTarget($fileName, $fileSize, $orderId, $orderItemId = null, $hasEmptyRearPage = false)
     {
-
         if ($orderItemId === null) {
             $orderItemId = $orderId . 'X01';
         }
 
         $hasEmptyRearPage = (bool) $hasEmptyRearPage;
 
-        $hasEmptyRearPage_string = '"hasEmptyRearPage": false';
+        $hasEmptyRearPageString = '"hasEmptyRearPage": false';
 
-        if($hasEmptyRearPage) {
-            $hasEmptyRearPage_string = '"hasEmptyRearPage": true';
+        if ($hasEmptyRearPage) {
+            $hasEmptyRearPageString = '"hasEmptyRearPage": true';
         }
 
 
+        $getDataUrl = $this->api_rest_base . '/v1/sales-orders/' .
+            $orderId . '/items/' . $orderItemId . '/printing-data';
 
-        $getData_url = $this->api_rest_base . '/v1/sales-orders/' . $orderId . '/items/' . $orderItemId . '/printing-data';
-
-        $getData_headers = array(
+        $getDataHeaders = [
             'Authorization: FLYERALARM app_token="' . $this->app_token . '", user_token="' . $this->user_token . '"',
             'Accept: application/json',
             'Content-Type: text/plain'
-        );
+        ];
 
-        $getData_post = '{"fileName": "' . $fileName . '", "fileSize": ' . $fileSize . ', '.$hasEmptyRearPage_string.'}';
+        $getDataPost = '{"fileName": "' . $fileName . '", "fileSize": ' .
+            $fileSize . ', ' . $hasEmptyRearPageString . '}';
 
         // Start the curl magic:
         //var_dump($getData_headers);
         //var_dump($getData_post);
 
         // setup
-        $getData_curl = curl_init();
-        curl_setopt($getData_curl, CURLOPT_URL, $getData_url);
-        curl_setopt($getData_curl, CURLOPT_HTTPHEADER, $getData_headers);
-        curl_setopt($getData_curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($getData_curl, CURLOPT_POST, 1);
-        curl_setopt($getData_curl, CURLOPT_POSTFIELDS, $getData_post);
-        curl_setopt($getData_curl, CURLOPT_SSL_VERIFYPEER, $this->api_rest_ssl_check);
+        $getDataCurl = curl_init();
+        curl_setopt($getDataCurl, CURLOPT_URL, $getDataUrl);
+        curl_setopt($getDataCurl, CURLOPT_HTTPHEADER, $getDataHeaders);
+        curl_setopt($getDataCurl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($getDataCurl, CURLOPT_POST, 1);
+        curl_setopt($getDataCurl, CURLOPT_POSTFIELDS, $getDataPost);
+        curl_setopt($getDataCurl, CURLOPT_SSL_VERIFYPEER, $this->api_rest_ssl_check);
         // just do it
-        $getData_response = curl_exec($getData_curl);
+        $getDataResponse = curl_exec($getDataCurl);
         // what did we get ?
-        $getData_info = curl_getinfo($getData_curl);
+        $getDataInfo = curl_getinfo($getDataCurl);
         // did any errors happen?
-        $getData_error = curl_error($getData_curl);
+        $getDataError = curl_error($getDataCurl);
         // we are done with this call
-        curl_close($getData_curl);
+        curl_close($getDataCurl);
 
         // make the data usefull
 
-        $data = json_decode($getData_response, true);
+        $data = json_decode($getDataResponse, true);
 
         return $data['url'];
     }
@@ -525,48 +509,46 @@ class Api
     /**
      * @param string $targetUrl
      * @param string $filePath
-     * @return mixed
+     * @return string
      */
     public function uploadFileByPaths($targetUrl, $filePath)
     {
+        $getDataUrl = $this->api_rest_base . '/..' . $targetUrl;
 
-        $getData_url = $this->api_rest_base . '/..' . $targetUrl;
-
-        $getData_headers = array(
+        $getDataHeaders = [
             'Authorization: FLYERALARM app_token="' . $this->app_token . '", user_token="' . $this->user_token . '"',
             'Accept: application/json'
-        );;
+        ];
 
-        $fh_res = fopen($filePath, 'r');
+
+        $fhRes = fopen($filePath, 'r');
 
         // Start the curl magic:
 
         // setup
-        $getData_curl = curl_init();
-        curl_setopt($getData_curl, CURLOPT_URL, $getData_url);
-        curl_setopt($getData_curl, CURLOPT_HTTPHEADER, $getData_headers);
-        curl_setopt($getData_curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($getData_curl, CURLOPT_PUT, 1);
-        curl_setopt($getData_curl, CURLOPT_INFILE, $fh_res);
-        curl_setopt($getData_curl, CURLOPT_INFILESIZE, filesize($filePath));
-        curl_setopt($getData_curl, CURLOPT_SSL_VERIFYPEER, $this->api_rest_ssl_check);
+        $getDataCurl = curl_init();
+        curl_setopt($getDataCurl, CURLOPT_URL, $getDataUrl);
+        curl_setopt($getDataCurl, CURLOPT_HTTPHEADER, $getDataHeaders);
+        curl_setopt($getDataCurl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($getDataCurl, CURLOPT_PUT, 1);
+        curl_setopt($getDataCurl, CURLOPT_INFILE, $fhRes);
+        curl_setopt($getDataCurl, CURLOPT_INFILESIZE, filesize($filePath));
+        curl_setopt($getDataCurl, CURLOPT_SSL_VERIFYPEER, $this->api_rest_ssl_check);
         // just do it
-        $getData_response = curl_exec($getData_curl);
+        $getDataResponse = curl_exec($getDataCurl);
         // what did we get ?
-        $getData_info = curl_getinfo($getData_curl);
+        $getDataInfo = curl_getinfo($getDataCurl);
         // did any errors happen?
-        $getData_error = curl_error($getData_curl);
+        $getDataError = curl_error($getDataCurl);
         // we are done with this call
-        curl_close($getData_curl);
+        curl_close($getDataCurl);
 
-        fclose($fh_res);
+        fclose($fhRes);
 
 
         // make the data usefull
-
-        $data = $getData_response;
+        $data = $getDataResponse;
 
         return $data;
     }
-
 }

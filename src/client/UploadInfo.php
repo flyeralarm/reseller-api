@@ -1,10 +1,9 @@
 <?php
-namespace flyeralarm\ResellerApi\client;
 
+namespace flyeralarm\ResellerApi\client;
 
 class UploadInfo
 {
-
     const TYPE_UPLOAD = 'upload';
 
     const TYPE_CD = 'cd';
@@ -34,13 +33,11 @@ class UploadInfo
 
     public function getArray()
     {
-        return array(
-            'dataTransferType' => (string)$this->type,
-            'dataTransferTime' => (string)$this->datum,
-            'dataTransferText' => (string)$this->text,
-            'referenceText' => (string)$this->text,
-        );
+        return [
+            'dataTransferType' => (string) $this->type,
+            'dataTransferTime' => (string) $this->datum,
+            'dataTransferText' => (string) $this->text,
+            'referenceText' => (string) $this->text,
+        ];
     }
-
-
 }

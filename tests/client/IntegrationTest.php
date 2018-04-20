@@ -1,6 +1,10 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace flyeralarm\ResellerApi;
+
+use ClientFactoryMock;
+use ConfigMock;
+use flyeralarm\ResellerApi\client\Order;
 use flyeralarm\ResellerApi\productCatalog\Group;
 use flyeralarm\ResellerApi\productCatalog\GroupList;
 use flyeralarm\ResellerApi\productCatalog\Product;
@@ -9,7 +13,6 @@ use flyeralarm\ResellerApi\productCatalog\ProductAttribute;
 use flyeralarm\ResellerApi\productCatalog\ProductAttributePossibleValuesList;
 use flyeralarm\ResellerApi\productCatalog\ProductAttributeValue;
 use flyeralarm\ResellerApi\productCatalog\ProductShippingType;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingTypeList;
 use flyeralarm\ResellerApi\productCatalog\ProductOption;
 use flyeralarm\ResellerApi\productCatalog\ProductOptionList;
 use flyeralarm\ResellerApi\productCatalog\ProductOptionPossibleValuesList;
@@ -26,22 +29,18 @@ use flyeralarm\ResellerApi\productCatalog\ProductQuantityOption;
 use flyeralarm\ResellerApi\productCatalog\ProductQuantityOptionList;
 use flyeralarm\ResellerApi\productCatalog\ProductQuantityShippingOption;
 use flyeralarm\ResellerApi\exception\LoginFail as LoginFailException;
-
-
 use flyeralarm\ResellerApi\client\Api;
 
 /**
- * @covers flyeralarm\ResellerApi\client\Api
- * @covers flyeralarm\ResellerApi\productCatalog\Loader
- * @covers flyeralarm\ResellerApi\productCatalog\Factory
- * @covers flyeralarm\ResellerApi\client\Factory
- * @covers flyeralarm\ResellerApi\client\Order
- * @covers flyeralarm\ResellerApi\lib\AbstractList
+ * @covers \flyeralarm\ResellerApi\client\Api
+ * @covers \flyeralarm\ResellerApi\productCatalog\Loader
+ * @covers \flyeralarm\ResellerApi\productCatalog\Factory
+ * @covers \flyeralarm\ResellerApi\client\Factory
+ * @covers \flyeralarm\ResellerApi\client\Order
+ * @covers \flyeralarm\ResellerApi\lib\AbstractList
  */
-class IntegrationTest extends TestCase
+class IntegrationTest extends \PHPUnit\Framework\TestCase
 {
-
-
     /**
      * @var ConfigMock $config
      */
@@ -64,7 +63,6 @@ class IntegrationTest extends TestCase
 
     public function setUp()
     {
-
         $this->config = new ConfigMock();
         $this->config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -75,9 +73,13 @@ class IntegrationTest extends TestCase
         $this->client = $this->factory->createClient();
 
         $this->api_order = $this->factory->createOrder();
-        $this->api_order->loadByPersistencyString("eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9rVZaeWXLJ3hT0HI2X0xnDS/BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9ope6cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPqRU5fxeTVm1XjC+Lzgs3Zat4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E=");
-
-
+        $this->api_order->loadByPersistencyString(
+            'eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9rVZaeWXLJ3hT0HI2X0xnDS/'.
+            'BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9ope6'.
+            'cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe'.
+            '6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPq'.
+            'RU5fxeTVm1XjC+Lzgs3Zat4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E='
+        );
     }
 
     public function testLogin()
@@ -89,10 +91,8 @@ class IntegrationTest extends TestCase
         );
     }
 
-
     public function testLoginFail()
     {
-
         $config = new ConfigMock();
         $config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<wrong-pw>')
@@ -103,8 +103,7 @@ class IntegrationTest extends TestCase
         $client = $factory->createClient();
 
         $this->expectException(LoginFailException::class);
-        $logged = $client->loggedInTest();
-
+        $client->loggedInTest();
     }
 
     /**
@@ -113,35 +112,37 @@ class IntegrationTest extends TestCase
      */
     public function testProductGroupIds()
     {
-
         /**
          * @var \flyeralarm\ResellerApi\productCatalog\GroupList $productGroups
          */
         $productGroups = $this->client->getProductGroupIds();
 
-        $checkArray = array(
-            0 => array(
+        $checkArray = [
+            0 => [
                 'id' => 1,
                 'name' => 'Sitzsack, nur Druck',
                 'desc' => 'some HTML',
                 'lang' => 'de',
-                'img' => 'https://unittest.flyeralarm.local/images/upload/content/products/Sitzsack/flyeralarm-sitzsack-nurdruck-260x260.jpg',
-            ),
-            1 => array(
+                'img' => 'https://unittest.flyeralarm.local/images/upload/content/products/'.
+                    'Sitzsack/flyeralarm-sitzsack-nurdruck-260x260.jpg',
+            ],
+            1 => [
                 'id' => 2,
                 'name' => 'Flyer Klassiker',
                 'desc' => 'some HTML will go here',
                 'lang' => 'de',
-                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/config/flyeralarm-flyer-klassiker-240x200-config.jpg',
-            ),
-            2 => array(
+                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/'.
+                    'config/flyeralarm-flyer-klassiker-240x200-config.jpg',
+            ],
+            2 => [
                 'id' => 3,
                 'name' => 'Aluminiumverbundplatte weiß im Wunschformat ',
                 'desc' => 'some HTML Code will go here.',
                 'lang' => 'de',
-                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/config/flyeralarm-flyer-klassiker-240x200-config.jpg',
-            ),
-        );
+                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/'.
+                    'config/flyeralarm-flyer-klassiker-240x200-config.jpg',
+            ],
+        ];
 
         $this->assertInstanceOf(
             GroupList::class,
@@ -154,7 +155,6 @@ class IntegrationTest extends TestCase
          * @var \flyeralarm\ResellerApi\productCatalog\Group $group
          */
         foreach ($productGroups as $group) {
-
             $this->assertInstanceOf(
                 Group::class,
                 $group
@@ -187,8 +187,6 @@ class IntegrationTest extends TestCase
 
             $i++;
         }
-
-
     }
 
     /**
@@ -199,30 +197,29 @@ class IntegrationTest extends TestCase
      */
     public function testProductAttributesByProductGroupId()
     {
-
         /**
          * @var \flyeralarm\ResellerApi\productCatalog\ProductAttributeList
          */
         $attributes = $this->client->getProductAttributesByProductGroupId(2);
 
-        $checkArray = array(
-            0 => array(
+        $checkArray = [
+            0 => [
                 'id' => 2798,
                 'name' => 'Ausführung',
-                'possible' => array(
-                    0 => array('id' => 14562, 'name' => 'DIN-Format'),
-                    1 => array('id' => 14563, 'name' => 'Rechteck'),
-                ),
-            ),
-            1 => array(
+                'possible' => [
+                    0 => ['id' => 14562, 'name' => 'DIN-Format'],
+                    1 => ['id' => 14563, 'name' => 'Rechteck'],
+                ],
+            ],
+            1 => [
                 'id' => 2791,
                 'name' => 'Format',
-                'possible' => array(
-                    0 => array('id' => 14582, 'name' => 'DIN A8(5,2 x 7,4 cm)'),
-                    1 => array('id' => 14580, 'name' => 'DIN A7(7,4 x 10,5 cm)'),
-                ),
-            ),
-        );
+                'possible' => [
+                    0 => ['id' => 14582, 'name' => 'DIN A8(5,2 x 7,4 cm)'],
+                    1 => ['id' => 14580, 'name' => 'DIN A7(7,4 x 10,5 cm)'],
+                ],
+            ],
+        ];
 
 
         $this->assertInstanceOf(
@@ -234,21 +231,16 @@ class IntegrationTest extends TestCase
             $attributes->hasAttributes()
         );
 
-        $string = (string)$attributes;
-
         $i = 0;
 
         /**
          * @var \flyeralarm\ResellerApi\productCatalog\ProductAttribute $attr
          */
         foreach ($attributes as $attr) {
-
             $this->assertInstanceOf(
                 ProductAttribute::class,
                 $attr
             );
-
-            $string = (string)$attr;
 
             $this->assertEquals(
                 $checkArray[$i]['id'],
@@ -271,8 +263,6 @@ class IntegrationTest extends TestCase
                 $values->hasValues()
             );
 
-            $string = (string)$values;
-
             $v1 = $values->getById($checkArray[$i]['possible'][0]['id']);
 
             $this->assertInstanceOf(
@@ -288,10 +278,9 @@ class IntegrationTest extends TestCase
 
             $j = 0;
             /**
-             * @var flyeralarm\ResellerApi\productCatalog\ProductAttributeValue $value
+             * @var \flyeralarm\ResellerApi\productCatalog\ProductAttributeValue $value
              */
             foreach ($values as $value) {
-
                 $this->assertInstanceOf(
                     ProductAttributeValue::class,
                     $value
@@ -307,33 +296,26 @@ class IntegrationTest extends TestCase
                     $value->getName()
                 );
 
-                $string = (string)$value;
+                $string = (string) $value;
 
                 $this->assertEquals(
-                    '[AV#' . $checkArray[$i]['possible'][$j]['id'] . '|' . $checkArray[$i]['possible'][$j]['name'] . ']',
+                    '[AV#' . $checkArray[$i]['possible'][$j]['id'] .
+                    '|' . $checkArray[$i]['possible'][$j]['name'] . ']',
                     $string
                 );
 
                 if ($j == 0) {
-
                     $attr->setSelection($value);
 
                     $this->assertEquals(
                         $checkArray[$i]['possible'][$j]['id'],
                         $attr->getSelection()->getId()
                     );
-
                 }
-
-
                 $j++;
-
             }
-
             $i++;
         }
-
-
     }
 
     /**
@@ -344,10 +326,9 @@ class IntegrationTest extends TestCase
      */
     public function testProductAttributesByProductGroup()
     {
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
-        $array = array(
+        $array = [
             'productgroup_id' => '2',
             'internalName' => 'old-flyer:klassiker',
             'tid_technicalDetail' => '21162',
@@ -359,11 +340,13 @@ class IntegrationTest extends TestCase
             'tid_importantHint' => null,
             'created' => '0000-00-00 00:00:00',
             'pictureUrl' => null,
-            'recoPictureUrl' => '/images/upload/content/images/products/flyer/countries/flyeralarm-flyer-klassiker-583x335-config-hu.jpg',
+            'recoPictureUrl' => '/images/upload/content/images/products/flyer/'.
+                'countries/flyeralarm-flyer-klassiker-583x335-config-hu.jpg',
             '_language' => 'de',
             '_name' => 'Flyer Klassiker',
             '_description' => 'some HTML will go here',
-            '_image' => '/images/upload/content/images/products/flyer/config/flyeralarm-flyer-klassiker-240x200-config.jpg',
+            '_image' => '/images/upload/content/images/products/flyer/'.
+                'config/flyeralarm-flyer-klassiker-240x200-config.jpg',
             '_technicalDetail' => '',
             '_seotext' => 'some seo text',
             '_parentSites' => 'bread crumbs',
@@ -371,7 +354,7 @@ class IntegrationTest extends TestCase
             '_metakeywords' => '',
             '_metadescription' => '',
             '_importantHint' => '',
-        );
+        ];
 
         $group = $loader->loadGroupFromArray($array);
 
@@ -380,25 +363,24 @@ class IntegrationTest extends TestCase
          */
         $attributes = $this->client->getProductAttributesByProductGroup($group);
 
-        $checkArray = array(
-            0 => array(
+        $checkArray = [
+            0 => [
                 'id' => 2798,
                 'name' => 'Ausführung',
-                'possible' => array(
-                    0 => array('id' => 14562, 'name' => 'DIN-Format'),
-                    1 => array('id' => 14563, 'name' => 'Rechteck'),
-                ),
-            ),
-            1 => array(
+                'possible' => [
+                    0 => ['id' => 14562, 'name' => 'DIN-Format'],
+                    1 => ['id' => 14563, 'name' => 'Rechteck'],
+                ],
+            ],
+            1 => [
                 'id' => 2791,
                 'name' => 'Format',
-                'possible' => array(
-                    0 => array('id' => 14582, 'name' => 'DIN A8(5,2 x 7,4 cm)'),
-                    1 => array('id' => 14580, 'name' => 'DIN A7(7,4 x 10,5 cm)'),
-                ),
-            ),
-        );
-
+                'possible' => [
+                    0 => ['id' => 14582, 'name' => 'DIN A8(5,2 x 7,4 cm)'],
+                    1 => ['id' => 14580, 'name' => 'DIN A7(7,4 x 10,5 cm)'],
+                ],
+            ],
+        ];
 
         $this->assertInstanceOf(
             ProductAttributeList::class,
@@ -409,21 +391,16 @@ class IntegrationTest extends TestCase
             $attributes->hasAttributes()
         );
 
-        $string = (string)$attributes;
-
         $i = 0;
 
         /**
          * @var \flyeralarm\ResellerApi\productCatalog\ProductAttribute $attr
          */
         foreach ($attributes as $attr) {
-
             $this->assertInstanceOf(
                 ProductAttribute::class,
                 $attr
             );
-
-            $string = (string)$attr;
 
             $this->assertEquals(
                 $checkArray[$i]['id'],
@@ -446,8 +423,6 @@ class IntegrationTest extends TestCase
                 $values->hasValues()
             );
 
-            $string = (string)$values;
-
             $v1 = $values->getById($checkArray[$i]['possible'][0]['id']);
 
             $this->assertInstanceOf(
@@ -463,10 +438,9 @@ class IntegrationTest extends TestCase
 
             $j = 0;
             /**
-             * @var flyeralarm\ResellerApi\productCatalog\ProductAttributeValue $value
+             * @var \flyeralarm\ResellerApi\productCatalog\ProductAttributeValue $value
              */
             foreach ($values as $value) {
-
                 $this->assertInstanceOf(
                     ProductAttributeValue::class,
                     $value
@@ -482,33 +456,26 @@ class IntegrationTest extends TestCase
                     $value->getName()
                 );
 
-                $string = (string)$value;
+                $string = (string) $value;
 
                 $this->assertEquals(
-                    '[AV#' . $checkArray[$i]['possible'][$j]['id'] . '|' . $checkArray[$i]['possible'][$j]['name'] . ']',
+                    '[AV#' . $checkArray[$i]['possible'][$j]['id'] .
+                    '|' . $checkArray[$i]['possible'][$j]['name'] . ']',
                     $string
                 );
 
                 if ($j == 0) {
-
                     $attr->setSelection($value);
 
                     $this->assertEquals(
                         $checkArray[$i]['possible'][$j]['id'],
                         $attr->getSelection()->getId()
                     );
-
                 }
-
-
                 $j++;
-
             }
-
             $i++;
         }
-
-
     }
 
     /**
@@ -519,59 +486,57 @@ class IntegrationTest extends TestCase
      */
     public function testgetAvailableAttributesByPreselectedAttributes()
     {
-
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
 
         $group = $factory->createGroup(2, 'Flyer Klassik', 'group test description', 'test_img.jpg', 'de');
 
-        $attrArray = array(
+        $attrArray = [
             2798 =>
-                array(
+                [
                     'id' => 2798,
                     'name' => 'Ausführung',
                     'sortvalue' => '1',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14562 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN-Format',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14563 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'Rechteck',
                                     'tooltipp' => '',
-                                ),
-                        )
-                ),
+                                ],
+                        ]
+                ],
             2791 =>
-                array(
+                [
                     'id' => 2791,
                     'name' => 'Format',
                     'sortvalue' => '2',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14582 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN A8(5,2 x 7,4 cm)',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14580 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'DIN A7(7,4 x 10,5 cm)',
                                     'tooltipp' => '',
-                                ),
-                        ),
-                )
-        );
+                                ],
+                        ],
+                ]
+        ];
 
         $attributes = $loader->loadAttributeListFromArray($attrArray);
 
@@ -601,7 +566,6 @@ class IntegrationTest extends TestCase
             $newAttribute->getById(2798)->getSelection()
         );
 
-
         $this->assertEquals(
             14562,
             $newAttribute->getById(2798)->getSelection()->getId()
@@ -616,8 +580,6 @@ class IntegrationTest extends TestCase
             null,
             $newAttribute->getById(2791)->getSelection()
         );
-
-
     }
 
     /**
@@ -627,59 +589,57 @@ class IntegrationTest extends TestCase
      */
     public function testGetAvailableQuantitiesByAttributes()
     {
-
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
 
         $group = $factory->createGroup(2, 'Flyer Klassik', 'group test description', 'test_img.jpg', 'de');
 
-        $attrArray = array(
+        $attrArray = [
             2798 =>
-                array(
+                [
                     'id' => 2798,
                     'name' => 'Ausführung',
                     'sortvalue' => '1',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14562 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN-Format',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14563 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'Rechteck',
                                     'tooltipp' => '',
-                                ),
-                        )
-                ),
+                                ],
+                        ]
+                ],
             2791 =>
-                array(
+                [
                     'id' => 2791,
                     'name' => 'Format',
                     'sortvalue' => '2',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14582 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN A8(5,2 x 7,4 cm)',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14580 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'DIN A7(7,4 x 10,5 cm)',
                                     'tooltipp' => '',
-                                ),
-                        ),
-                )
-        );
+                                ],
+                        ],
+                ]
+        ];
 
         $attributes = $loader->loadAttributeListFromArray($attrArray);
 
@@ -765,10 +725,7 @@ class IntegrationTest extends TestCase
             'standard',
             $quantity->getStandardShippingOption()->getType()
         );
-
-
     }
-
 
     /**
      * @covers \flyeralarm\ResellerApi\productCatalog\Product
@@ -811,10 +768,7 @@ class IntegrationTest extends TestCase
             $attrs->hasAttributes()
         );
 
-        $string = (string)$product;
-
         $this->api_order->setProduct($product);
-
     }
 
     /**
@@ -823,7 +777,6 @@ class IntegrationTest extends TestCase
      */
     public function testGetShippingTypeList()
     {
-
         $product = $this->client->findProductByQuantityId($this->api_order->getQuantityId());
 
         $shippingTypes = $this->client->getShippingTypeList($product);
@@ -841,7 +794,7 @@ class IntegrationTest extends TestCase
 
         $this->assertEquals(
             19.18,
-            $standard->getBruttoPrice()
+            $standard->getNettPrice()
         );
 
         $this->assertEquals(
@@ -861,7 +814,7 @@ class IntegrationTest extends TestCase
 
         $this->assertEquals(
             22.824200000000001,
-            $standard->getNettPrice()
+            $standard->getBruttoPrice()
         );
 
         $this->assertEquals(
@@ -873,8 +826,6 @@ class IntegrationTest extends TestCase
             'Standard',
             $standard->getName()
         );
-
-        $string = (string)$standard;
 
         $express = $shippingTypes->getByName('express');
 
@@ -889,9 +840,6 @@ class IntegrationTest extends TestCase
             ProductShippingType::class,
             $overnight
         );
-
-        $string = (string)$shippingTypes;
-
     }
 
     /**
@@ -902,53 +850,55 @@ class IntegrationTest extends TestCase
      */
     public function testGetAvailableProductOptions()
     {
-
         $product = $this->client->findProductByQuantityId($this->api_order->getQuantityId());
 
-        $checkArray = array(
-            0 => array(
+        $checkArray = [
+            0 => [
                 'id' => 3,
                 'name' => 'Datencheck',
-                'possible' => array(
-                    0 => array(
+                'possible' => [
+                    0 => [
                         'id' => 3001,
                         'name' => 'Basis-Datencheck',
                         'description' => 'Datencheck: Basis-Datencheck',
                         'bruttoPrice' => '0,00 €',
                         'nettoPrice' => '0,00 €',
-                    ),
-                    1 => array(
+                    ],
+                    1 => [
                         'id' => 3002,
                         'name' => 'Profi-Datencheck',
                         'description' => 'Datencheck: Profi-Datencheck',
                         'bruttoPrice' => '5,00 €',
                         'nettoPrice' => '5,95 €',
-                    ),
-                ),
-            ),
-            1 => array(
+                    ],
+                ],
+            ],
+            1 => [
                 'id' => 9,
                 'name' => 'Digitalproof',
-                'possible' => array(
-                    0 => array(
+                'possible' => [
+                    0 => [
                         'id' => 9001,
                         'name' => 'Nein',
                         'description' => 'Digitalproof: Nein',
                         'bruttoPrice' => '0,00 €',
                         'nettoPrice' => '0,00 €',
-                    ),
-                    1 => array(
+                    ],
+                    1 => [
                         'id' => 9002,
                         'name' => 'Ja',
                         'description' => 'Digitalproof: Ja',
                         'bruttoPrice' => '25,00 €',
                         'nettoPrice' => '29,75 €',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
-        $productOptions = $this->client->getAvailableProductOptions($product);
+        $order = $this->factory->createOrder();
+        $order->setProduct($product);
+
+        $productOptions = $this->client->getAvailableProductOptions($order);
 
         $this->assertInstanceOf(
             ProductOptionList::class,
@@ -973,14 +923,11 @@ class IntegrationTest extends TestCase
             $o2
         );
 
-        $string = (string)$productOptions;
-
         $i = 0;
         /**
          * @var ProductOption $pOption
          */
         foreach ($productOptions as $pOption) {
-
             $this->assertInstanceOf(
                 ProductOption::class,
                 $pOption
@@ -996,7 +943,6 @@ class IntegrationTest extends TestCase
                 $pOption->getName()
             );
 
-
             $possible = $pOption->getPossibleValues();
 
             $this->assertTrue(
@@ -1007,8 +953,6 @@ class IntegrationTest extends TestCase
                 ProductOptionPossibleValuesList::class,
                 $possible
             );
-
-            $string = (string)$pOption;
 
             $v1 = $possible->getById($checkArray[$i]['possible'][0]['id']);
 
@@ -1029,7 +973,6 @@ class IntegrationTest extends TestCase
              * @var ProductOptionValue $value
              */
             foreach ($possible as $value) {
-
                 $this->assertInstanceOf(
                     ProductOptionValue::class,
                     $value
@@ -1060,24 +1003,16 @@ class IntegrationTest extends TestCase
                     $value->getNettoPrice()
                 );
 
-                $string = (string)$value;
-
                 $pOption->setSelection($value);
 
                 $this->assertEquals(
                     $checkArray[$i]['possible'][$j]['id'],
                     $pOption->getSelection()->getOptionValueId()
                 );
-
-
                 $j++;
             }
-
-
             $i++;
         }
-
-
     }
 
     /**
@@ -1088,36 +1023,35 @@ class IntegrationTest extends TestCase
      */
     public function testGetAvailableShippingOptions()
     {
-
         $shippingOptions = $this->client->getAvailableShippingOptions($this->api_order);
 
-        $checkArray = array(
+        $checkArray = [
             0 =>
-                array(
+                [
                     'id' => '1',
                     'name' => 'Versand via UPS',
                     'defaultName' => 'Versand via UPS',
                     'price' => 0,
                     'priceWithTax' => 0,
-                    'upgrades' => array(
-                        0 => array(
+                    'upgrades' => [
+                        0 => [
                             'id' => 1001,
                             'name' => 'Samstags- Zustellung',
                             'defaultName' => 'Samstags- Zustellung',
                             'price' => 35,
                             'priceWithTax' => 40
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
             1 =>
-                array(
+                [
                     'id' => '4',
                     'name' => 'Würzburg',
                     'defaultName' => 'Würzburg',
                     'price' => 0,
                     'priceWithTax' => 0,
-                ),
-        );
+                ],
+        ];
 
         $this->assertInstanceOf(
             ProductShippingOptionList::class,
@@ -1129,7 +1063,6 @@ class IntegrationTest extends TestCase
          * @var ProductShippingOption $so
          */
         foreach ($shippingOptions as $so) {
-
             $this->assertInstanceOf(
                 ProductShippingOption::class,
                 $so
@@ -1162,7 +1095,6 @@ class IntegrationTest extends TestCase
 
             $this->assertEquals(
                 $checkArray[$i]['price'],
-
                 $so->getBruttoPrice()
             );
 
@@ -1228,8 +1160,6 @@ class IntegrationTest extends TestCase
                     $checkArray[$i]['upgrades'][0]['priceWithTax'],
                     $suo->getNettoPrice()
                 );
-
-
             } else {
                 $this->assertEquals(
                     null,
@@ -1237,10 +1167,7 @@ class IntegrationTest extends TestCase
                 );
             }
 
-            $string = (string)$so;
-
             $i++;
-
         }
 
         $so1 = $shippingOptions->getById('4');
@@ -1274,10 +1201,6 @@ class IntegrationTest extends TestCase
         $this->assertTrue(
             $shippingOptions->hasValues()
         );
-
-        $string = (string)$shippingOptions;
-
-
     }
 
     /**
@@ -1286,25 +1209,24 @@ class IntegrationTest extends TestCase
      */
     public function testGetAvailablePaymentOptions()
     {
-
         $paymentOptions = $this->client->getAvailablePaymentOptions($this->api_order);
 
-        $checkArray = array(
+        $checkArray = [
             0 =>
-                array(
+                [
                     'id' => 1,
                     'name' => 'Vorauskasse',
                     'price' => 0,
                     'serviceFee' => 0,
-                ),
+                ],
             1 =>
-                array(
+                [
                     'id' => 5,
                     'name' => 'Barnachnahme',
                     'price' => 5.75,
                     'serviceFee' => 0,
-                )
-        );
+                ]
+        ];
 
         $this->assertInstanceOf(
             ProductPaymentOptionList::class,
@@ -1320,7 +1242,6 @@ class IntegrationTest extends TestCase
          * @var ProductPaymentOption $po
          */
         foreach ($paymentOptions as $po) {
-
             $this->assertInstanceOf(
                 ProductPaymentOption::class,
                 $po
@@ -1347,8 +1268,6 @@ class IntegrationTest extends TestCase
             );
 
             $i++;
-
-
         }
 
         $po1 = $paymentOptions->getById(5);
@@ -1378,71 +1297,53 @@ class IntegrationTest extends TestCase
             null,
             $po1
         );
-
-
-        $string = (string)$paymentOptions;
-
-
     }
-
 
     public function testSendFullOrder()
     {
-
         $orderId = $this->client->sendFullOrder($this->api_order);
 
         $this->assertEquals(
             'DE001234567',
             $orderId
         );
-
     }
 
     public function testGetOrderStatus()
     {
-
         $orderStatus = $this->client->getOrderStatus('DE001234567');
 
         $this->assertEquals(
-            array(
+            [
                 0 =>
-                    array(
+                    [
                         'orderId' => 'DE001234567',
                         'statusId' => '42',
                         'status' => 'Daten gehen in Druck',
                         'parcelamount' => 0,
-                    ),
-            ),
+                    ],
+            ],
             $orderStatus
         );
-
     }
-
 
     public function testCreateUploadTarget()
     {
-
         $return = $this->client->createUploadTarget('curl_test.txt', 1234, 'DE001234567');
 
         $this->assertEquals(
             null,
             $return
         );
-
-
     }
 
     public function testUploadFileByPaths()
     {
-
         $return = $this->client->uploadFileByPaths('/curl_test.txt', __DIR__ . '/../stubs/curl_test.txt');
 
         $this->assertEquals(
             null,
             $return
         );
-
-
     }
-
 }

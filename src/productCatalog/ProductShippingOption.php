@@ -123,10 +123,10 @@ class ProductShippingOption
     public function __toString()
     {
         $string = ' [ SO#' . $this->id . '|' . $this->name . " ->\n";
-        $string = $string . '  price:' . (string)$this->priceWithTax . "( excl.:" . (string)$this->price . ")\n";
+        $string = $string . '  price:' . (string) $this->priceWithTax . "( excl.:" . (string) $this->price . ")\n";
 
         if ($this->upgrades instanceof ShippingUpgradeList) {
-            $string = $string . '  upgradeOptions: ' . (string)$this->upgrades . "\n";
+            $string = $string . '  upgradeOptions: ' . (string) $this->upgrades . "\n";
         }
 
         $string = $string . " ]\n";

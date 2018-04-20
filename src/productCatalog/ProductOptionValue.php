@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\productCatalog;
 
-
 class ProductOptionValue
 {
 
@@ -93,5 +92,4 @@ class ProductOptionValue
     {
         return '[OV#' . $this->optionValueId . '|' . $this->name . ']';
     }
-
 }

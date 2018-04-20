@@ -3,7 +3,6 @@ namespace flyeralarm\ResellerApi\exception;
 
 use flyeralarm\ResellerApi\exception\General as GeneralException;
 
-
 class LoginFail extends Connection
 {
 
@@ -14,6 +13,5 @@ class LoginFail extends Connection
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

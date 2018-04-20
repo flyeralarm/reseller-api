@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\productCatalog;
 
-
 class Group
 {
     /**
@@ -45,7 +44,6 @@ class Group
         $this->description = $description;
         $this->image = $image_uri;
         $this->language = $language;
-
     }
 
     /**
@@ -87,5 +85,4 @@ class Group
     {
         return $this->language;
     }
-
 }

@@ -13,5 +13,4 @@ class TestNL extends AbstractConfig
     protected $api_rest_base = 'https://api.staging.flyeralarm.com/de';
 
     protected $api_rest_ssl_check = false;
-
 }

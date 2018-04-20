@@ -1,4 +1,5 @@
 <?php
+
 namespace flyeralarm\ResellerApi\productCatalog;
 
 use flyeralarm\ResellerApi\productCatalog\ProductShippingOption as ShippingOption;
@@ -7,16 +8,20 @@ use flyeralarm\ResellerApi\exception\AddObjectType as AddObjectTypeException;
 
 class ProductShippingOptionList extends AbstractList
 {
-
     /**
      * Add an Item to the list.
-     * @param ShippingOption $item
-     * @return void
+     *
+     * @param  ShippingOption $item
+     * @return null
+     * @throws AddObjectTypeException
      */
     public function add($item)
     {
         if (!$item instanceof ShippingOption) {
-            throw new AddObjectTypeException('ShippingOptionList only accepts objects of type ShippingOption.', 5088);
+            throw new AddObjectTypeException(
+                'ShippingOptionList only accepts objects of type ShippingOption.',
+                5088
+            );
         }
         $this->elements[] = $item;
     }
@@ -76,12 +81,10 @@ class ProductShippingOptionList extends AbstractList
     {
         $string = "  { \n";
         foreach ($this as $value) {
-            $string = $string . "   " . (string)$value . " \n";
+            $string = $string . "   " . (string) $value . " \n";
         }
         $string = $string . '  }';
 
         return $string;
     }
-
-
 }

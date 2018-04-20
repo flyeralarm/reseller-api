@@ -1,7 +1,6 @@
 <?php
-namespace flyeralarm\ResellerApi\client;
 
-use flyeralarm\ResellerApi\client\Address;
+namespace flyeralarm\ResellerApi\client;
 
 class AddressList
 {
@@ -83,11 +82,10 @@ class AddressList
      */
     public function getArray()
     {
-        return array(
+        return [
             'sender' => $this->getSender()->getArray(),
             'delivery' => $this->getDelivery()->getArray(),
             'invoice' => $this->getInvoice()->getArray()
-        );
+        ];
     }
-
 }

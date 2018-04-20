@@ -37,5 +37,4 @@ class ProductQuantityOptionList extends AbstractList
 
         return null;
     }
-
 }

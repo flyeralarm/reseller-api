@@ -47,5 +47,4 @@ class ProductAttributeValue
     {
         return '[AV#' . $this->id . '|' . $this->name . ']';
     }
-
 }

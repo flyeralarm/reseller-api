@@ -1,6 +1,6 @@
 <?php
-namespace flyeralarm\ResellerApi\client;
 
+namespace flyeralarm\ResellerApi\client;
 
 class Address
 {
@@ -263,7 +263,7 @@ class Address
      */
     public function getArray()
     {
-        return array(
+        return [
             'company' => $this->getCompany(),
             'gender' => $this->getGender(),
             'firstName' => $this->getFirstName(),
@@ -275,7 +275,6 @@ class Address
             'county' => $this->getCounty(),
             'locale' => $this->getLocale(),
             'phone1' => $this->getPhone1()
-        );
+        ];
     }
-
 }

@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\productCatalog;
 
-
 class ProductQuantityShippingOption
 {
     /**

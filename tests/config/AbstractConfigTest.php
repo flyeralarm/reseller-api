@@ -1,46 +1,39 @@
 <?php
 
+namespace flyeralarm\ResellerApi\config;
+
 use PHPUnit\Framework\TestCase;
 
-use flyeralarm\ResellerApi\config\AbstractConfig;
-use flyeralarm\ResellerApi\client\AddressList;
-
-
 /**
- * @covers flyeralarm\ResellerApi\config\AbstractConfig
+ * @covers \flyeralarm\ResellerApi\config\AbstractConfig
  */
-class ConfigTest extends TestCase
+class AbstractConfigTest extends TestCase
 {
-
     public function testCreateConfigObjects()
     {
-
-        $system_variations = array(
+        $system_variations = [
             'Live' =>
-                array(
+                [
                     'url' => 'https://soap.flyeralarm.com/{country}/shop/soap/?wsdl',
                     'rest' => 'https://api.flyeralarm.com/de',
                     'img' => 'https://flyeralarm.com',
                     'class' => 'flyeralarm\ResellerApi\config\Live',
                     'ssl' => true
-                ),
+                ],
             'Test' =>
-                array(
+                [
                     'url' => 'https://staging.flyeralarm.com/{country}/shop/soap/?wsdl',
                     'rest' => 'https://api.staging.flyeralarm.com/de',
                     'img' => 'https://staging.flyeralarm.com',
                     'class' => 'flyeralarm\ResellerApi\config\Test',
                     'ssl' => false
-                ),
-        );
-        $countries = array('at', 'be', 'ch', 'de', 'dk', 'es', 'fi', 'fr', 'hu', 'ie', 'it', 'nl', 'pl', 'se', 'uk');
+                ],
+        ];
+        $countries = ['at', 'be', 'ch', 'de', 'dk', 'es', 'fi', 'fr', 'hu', 'ie', 'it', 'nl', 'pl', 'se', 'uk'];
 
         foreach ($countries as $c) {
-
             foreach ($system_variations as $env => $param) {
-
                 $class = $param['class'] . strtoupper($c);
-
 
                 /**
                  * @var AbstractConfig $config
@@ -98,13 +91,7 @@ class ConfigTest extends TestCase
                     $param['ssl'],
                     $config->getRestSSLCheck()
                 );
-
             }
-
-
         }
-
     }
-
-
 }

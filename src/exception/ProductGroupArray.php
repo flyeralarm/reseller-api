@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\exception;
 
-
 class ProductGroupArray extends DataStructure
 {
 
@@ -12,6 +11,5 @@ class ProductGroupArray extends DataStructure
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

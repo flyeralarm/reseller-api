@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\productCatalog;
 
-
 class ProductShippingOptionUpgrade
 {
 
@@ -108,10 +107,9 @@ class ProductShippingOptionUpgrade
     public function __toString()
     {
         $string = ' [ SOU#' . $this->id . '|' . $this->name . " ->\n";
-        $string = $string . '  price:' . (string)$this->priceWithTax . "( excl.:" . (string)$this->price . ")\n";
+        $string = $string . '  price:' . (string) $this->priceWithTax . "( excl.:" . (string) $this->price . ")\n";
         $string = $string . " ]\n";
 
         return $string;
     }
-
 }

@@ -26,6 +26,7 @@ use flyeralarm\ResellerApi\productCatalog\ProductPaymentOptionList as PaymentOpt
 
 /**
  * Class Factory
+ *
  * @package flyeralarm\ResellerApi\productCatalog
  */
 class Factory
@@ -265,5 +266,4 @@ class Factory
     {
         return new PaymentOption($id, $name, $price, $serviceFee);
     }
-
 }

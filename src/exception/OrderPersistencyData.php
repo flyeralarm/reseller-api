@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\exception;
 
-
 class OrderPersistencyData extends DataStructure
 {
 
@@ -12,6 +11,5 @@ class OrderPersistencyData extends DataStructure
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

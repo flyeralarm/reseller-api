@@ -8,7 +8,6 @@
 
 namespace flyeralarm\ResellerApi\exception;
 
-
 class ProductGroupListArray extends DataStructure
 {
 
@@ -19,6 +18,5 @@ class ProductGroupListArray extends DataStructure
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

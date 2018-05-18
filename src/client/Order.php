@@ -1,10 +1,10 @@
 <?php
+
 namespace flyeralarm\ResellerApi\client;
 
 use flyeralarm\ResellerApi\client\Api as ApiClient;
 use flyeralarm\ResellerApi\productCatalog\Product as Product;
 use flyeralarm\ResellerApi\productCatalog\ProductOptionList as OptionList;
-use flyeralarm\ResellerApi\productCatalog\ProductOption as Option;
 use flyeralarm\ResellerApi\productCatalog\ProductOptionValue as OptionValue;
 use flyeralarm\ResellerApi\client\AddressList as AddressList;
 use flyeralarm\ResellerApi\productCatalog\ProductShippingType as ShippingType;
@@ -113,18 +113,17 @@ class Order
     private function parseProductOptionsArray()
     {
 
-        $array = array();
+        $array = [];
 
         if ($this->productOptions instanceof OptionList) {
             foreach ($this->productOptions as $opt) {
                 if ($opt->getSelection() instanceof OptionValue) {
-                    $array[(int)$opt->getOptionId()] = (int)$opt->getSelection()->getOptionValueId();
+                    $array[(int) $opt->getOptionId()] = (int) $opt->getSelection()->getOptionValueId();
                 }
             }
 
             $this->productOptionsArray = $array;
         }
-
     }
 
     public function setProductOptions(OptionList $productOptionList)
@@ -250,7 +249,7 @@ class Order
 
     public function setResellerPrice($price)
     {
-        $this->resellerAmount = (float)$price;
+        $this->resellerAmount = (float) $price;
 
         return $this;
     }
@@ -262,7 +261,7 @@ class Order
 
     public function setCustomWidth($width)
     {
-        $this->customWidth = (float)$width;
+        $this->customWidth = (float) $width;
 
         return $this;
     }
@@ -274,7 +273,7 @@ class Order
 
     public function setCustomHeight($height)
     {
-        $this->customHeight = (float)$height;
+        $this->customHeight = (float) $height;
 
         return $this;
     }
@@ -287,7 +286,7 @@ class Order
     private function getPersistencyArray()
     {
 
-        $array = array(
+        $array = [
             'qi' => $this->quantityId,
             'sti' => $this->shippingTypeId,
             'poa' => $this->productOptionsArray,
@@ -301,10 +300,9 @@ class Order
             'cw' => $this->customWidth,
             'ch' => $this->customHeight
 
-        );
+        ];
 
         return $array;
-
     }
 
     public function getPersistencyString()
@@ -315,25 +313,24 @@ class Order
         $string = base64_encode(gzcompress(json_encode($array)));
 
         return $string;
-
     }
 
     private function loadByPersistencyArray($array)
     {
 
-        if (!is_array($array) ||
-            !array_key_exists('qi', $array) ||
-            !array_key_exists('sti', $array) ||
-            !array_key_exists('poa', $array) ||
-            !array_key_exists('ah', $array) ||
-            !array_key_exists('soi', $array) ||
-            !array_key_exists('poi', $array) ||
-            !array_key_exists('sui', $array) ||
-            !array_key_exists('ra', $array) ||
-            !array_key_exists('cw', $array) ||
-            !array_key_exists('ch', $array) ||
-            !array_key_exists('al', $array) ||
-            !array_key_exists('ui', $array)
+        if (!is_array($array)
+            || !array_key_exists('qi', $array)
+            || !array_key_exists('sti', $array)
+            || !array_key_exists('poa', $array)
+            || !array_key_exists('ah', $array)
+            || !array_key_exists('soi', $array)
+            || !array_key_exists('poi', $array)
+            || !array_key_exists('sui', $array)
+            || !array_key_exists('ra', $array)
+            || !array_key_exists('cw', $array)
+            || !array_key_exists('ch', $array)
+            || !array_key_exists('al', $array)
+            || !array_key_exists('ui', $array)
         ) {
             throw new OrderPersistencyDataException();
         }
@@ -355,7 +352,6 @@ class Order
             $this->addressList = new AddressList();
 
             if (isset($array['al']['sender']) && !empty($array['al']['sender'])) {
-
                 $sender = new Address();
 
                 $sender
@@ -375,7 +371,6 @@ class Order
             }
 
             if (isset($array['al']['delivery']) && !empty($array['al']['delivery'])) {
-
                 $delivery = new Address();
 
                 $delivery
@@ -395,7 +390,6 @@ class Order
             }
 
             if (isset($array['al']['invoice']) && !empty($array['al']['invoice'])) {
-
                 $invoice = new Address();
 
                 $invoice
@@ -413,8 +407,6 @@ class Order
 
                 $this->addressList->setInvoice($invoice);
             }
-
-
         }
 
         if ($array['ui'] !== null) {
@@ -423,10 +415,7 @@ class Order
                 $this->uploadInfo->setText($array['ui']['dataTransferText']);
                 $this->uploadInfo->setDateToNow();
             }
-
         }
-
-
     }
 
     public function loadByPersistencyString($string)
@@ -443,7 +432,5 @@ class Order
         $this->loadByPersistencyArray($array);
 
         return $this;
-
     }
-
 }

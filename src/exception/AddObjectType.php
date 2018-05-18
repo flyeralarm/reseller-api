@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\exception;
 
-
 class AddObjectType extends ArrayAccess
 {
 
@@ -12,6 +11,5 @@ class AddObjectType extends ArrayAccess
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

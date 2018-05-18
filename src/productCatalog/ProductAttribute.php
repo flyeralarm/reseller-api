@@ -88,12 +88,10 @@ class ProductAttribute
     public function __toString()
     {
         $string = ' [ A#' . $this->id . '|' . $this->name . " ->\n";
-        $string = $string . '  current value:' . (string)$this->selection . "\n";
-        $string = $string . "  possible values: \n" . (string)$this->possibe_values . "\n";
+        $string = $string . '  current value:' . (string) $this->selection . "\n";
+        $string = $string . "  possible values: \n" . (string) $this->possibe_values . "\n";
         $string = $string . " ]\n";
 
         return $string;
     }
-
-
 }

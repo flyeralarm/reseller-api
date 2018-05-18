@@ -1,10 +1,9 @@
 <?php
-namespace flyeralarm\ResellerApi\config;
 
+namespace flyeralarm\ResellerApi\config;
 
 abstract class AbstractConfig
 {
-
     protected $wsdl_uri = null;
 
     protected $api_rest_base = null;
@@ -89,5 +88,4 @@ abstract class AbstractConfig
     {
         return $this->reseller_password;
     }
-
 }

@@ -3,7 +3,6 @@ namespace flyeralarm\ResellerApi\exception;
 
 use flyeralarm\ResellerApi\exception\General as GeneralException;
 
-
 class SoapCall extends Connection
 {
 
@@ -14,6 +13,5 @@ class SoapCall extends Connection
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

@@ -3,7 +3,6 @@ namespace flyeralarm\ResellerApi\exception;
 
 use \Exception as PHPException;
 
-
 class General extends PHPException
 {
 
@@ -14,7 +13,5 @@ class General extends PHPException
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
-
 }

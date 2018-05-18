@@ -1,27 +1,24 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use flyeralarm\ResellerApi\client\Factory;
+namespace flyeralarm\ResellerApi\client;
+
+use flyeralarm\ResellerApi\config\AbstractConfig;
 use flyeralarm\ResellerApi\config\TestDE_Internal as Config;
-use flyeralarm\ResellerApi\client\AddressList;
-use flyeralarm\ResellerApi\client\Order;
-use flyeralarm\ResellerApi\client\UploadInfo;
 use flyeralarm\ResellerApi\client\Api as ApiClient;
+use flyeralarm\ResellerApi\config\TestDEInternal;
 
 /**
  * @covers \flyeralarm\ResellerApi\client\Factory
  * @covers \flyeralarm\ResellerApi\client\Api as ApiClient
  */
-class FactoryTest extends TestCase
+class FactoryTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @covers \flyeralarm\ResellerApi\client\AddressList
      */
     public function testCreateAddressList()
     {
-
-        $c = new Config();
+        $c = new TestDEInternal();
 
         $f = new Factory($c);
 
@@ -31,7 +28,6 @@ class FactoryTest extends TestCase
             AddressList::class,
             $al
         );
-
     }
 
     /**
@@ -39,8 +35,7 @@ class FactoryTest extends TestCase
      */
     public function testCreateOrder()
     {
-
-        $c = new Config();
+        $c = new TestDEInternal();
         $f = new Factory($c);
         $o = $f->createOrder();
 
@@ -48,7 +43,6 @@ class FactoryTest extends TestCase
             Order::class,
             $o
         );
-
     }
 
     /**
@@ -56,10 +50,9 @@ class FactoryTest extends TestCase
      */
     public function testCreateUploadInfo()
     {
-
         date_default_timezone_set('Europe/Berlin');
 
-        $c = new Config();
+        $c = new TestDEInternal();
         $f = new Factory($c);
         $string = '9753 - Some - UNIT TEST String';
         $ui = $f->createUploadInfo($string);
@@ -68,7 +61,6 @@ class FactoryTest extends TestCase
             UploadInfo::class,
             $ui
         );
-
     }
 
     /**
@@ -76,8 +68,7 @@ class FactoryTest extends TestCase
      */
     public function testCreateClient()
     {
-
-        $c = new Config();
+        $c = new TestDEInternal();
 
         $f = new Factory($c);
 
@@ -87,8 +78,5 @@ class FactoryTest extends TestCase
             ApiClient::class,
             $api
         );
-
     }
-
-
 }

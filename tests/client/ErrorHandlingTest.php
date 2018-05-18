@@ -1,55 +1,34 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-use flyeralarm\ResellerApi\productCatalog\Group;
-use flyeralarm\ResellerApi\productCatalog\GroupList;
-use flyeralarm\ResellerApi\productCatalog\Product;
-use flyeralarm\ResellerApi\productCatalog\ProductAttributeList;
-use flyeralarm\ResellerApi\productCatalog\ProductAttribute;
-use flyeralarm\ResellerApi\productCatalog\ProductAttributePossibleValuesList;
-use flyeralarm\ResellerApi\productCatalog\ProductAttributeValue;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingType;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingTypeList;
-use flyeralarm\ResellerApi\productCatalog\ProductOption;
-use flyeralarm\ResellerApi\productCatalog\ProductOptionList;
-use flyeralarm\ResellerApi\productCatalog\ProductOptionPossibleValuesList;
-use flyeralarm\ResellerApi\productCatalog\ProductOptionValue;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingOption;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingOptionList;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingOptionUpgrade;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingOptionUpgradeList;
-use flyeralarm\ResellerApi\productCatalog\ProductPaymentOption;
-use flyeralarm\ResellerApi\productCatalog\ProductPaymentOptionList;
+namespace flyeralarm\ResellerApi;
+
+use ClientFactoryMock;
+use ClientFactoryMockFail;
+use ConfigMock;
+use flyeralarm\ResellerApi\client\Order;
 use flyeralarm\ResellerApi\productCatalog\Factory as ProductFactory;
 use flyeralarm\ResellerApi\productCatalog\Loader as ProductLoader;
-use flyeralarm\ResellerApi\productCatalog\ProductQuantityOption;
-use flyeralarm\ResellerApi\productCatalog\ProductQuantityOptionList;
-use flyeralarm\ResellerApi\productCatalog\ProductQuantityShippingOption;
 use flyeralarm\ResellerApi\exception\LoginFail as LoginFailException;
 use flyeralarm\ResellerApi\exception\SoapCall as SoapCallException;
 use flyeralarm\ResellerApi\exception\AddObjectType as AddObjectTypeException;
-
-
 use flyeralarm\ResellerApi\client\Api;
 
 /**
- * @covers flyeralarm\ResellerApi\client\Api
- * @covers flyeralarm\ResellerApi\productCatalog\Loader
- * @covers flyeralarm\ResellerApi\productCatalog\Factory
- * @covers flyeralarm\ResellerApi\client\Factory
- * @covers flyeralarm\ResellerApi\client\Order
- * @covers flyeralarm\ResellerApi\exception\LoginFail
- * @covers flyeralarm\ResellerApi\exception\SoapCall
- * @covers flyeralarm\ResellerApi\exception\AddObjectType
- * @covers flyeralarm\ResellerApi\exception\General
- * @covers flyeralarm\ResellerApi\exception\Connection
- * @covers flyeralarm\ResellerApi\exception\ArrayAccess
- * @covers flyeralarm\ResellerApi\exception\DataStructure
+ * @covers \flyeralarm\ResellerApi\client\Api
+ * @covers \flyeralarm\ResellerApi\productCatalog\Loader
+ * @covers \flyeralarm\ResellerApi\productCatalog\Factory
+ * @covers \flyeralarm\ResellerApi\client\Factory
+ * @covers \flyeralarm\ResellerApi\client\Order
+ * @covers \flyeralarm\ResellerApi\exception\LoginFail
+ * @covers \flyeralarm\ResellerApi\exception\SoapCall
+ * @covers \flyeralarm\ResellerApi\exception\AddObjectType
+ * @covers \flyeralarm\ResellerApi\exception\General
+ * @covers \flyeralarm\ResellerApi\exception\Connection
+ * @covers \flyeralarm\ResellerApi\exception\ArrayAccess
+ * @covers \flyeralarm\ResellerApi\exception\DataStructure
  */
-class ErrorHandlingTest extends TestCase
+class ErrorHandlingTest extends \PHPUnit\Framework\TestCase
 {
-
-
     /**
      * @var ConfigMock $config
      */
@@ -72,7 +51,6 @@ class ErrorHandlingTest extends TestCase
 
     public function setUp()
     {
-
         $this->config = new ConfigMock();
         $this->config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -83,258 +61,250 @@ class ErrorHandlingTest extends TestCase
         $this->client = $this->factory->createClient();
 
         $this->api_order = $this->factory->createOrder();
-        $this->api_order->loadByPersistencyString("eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9rVZaeWXLJ3hT0HI2X0xnDS/BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9ope6cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPqRU5fxeTVm1XjC+Lzgs3Zat4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E=");
-
-
+        $this->api_order->loadByPersistencyString(
+            'eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9'.
+            'rVZaeWXLJ3hT0HI2X0xnDS/BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9'.
+            'ope6cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe6aSpez6aL'.
+            'Gs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPqRU5fxeTVm1XjC+Lzgs3Zat'.
+            '4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E='
+        );
     }
 
     public function testLogin()
     {
-
         $this->expectException(LoginFailException::class);
-        $logged = $this->client->loggedInTest();
-
+        $this->client->loggedInTest();
     }
 
     public function testGetProductGroupIds()
     {
-
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getProductGroupIds();
-
+        $this->client->getProductGroupIds();
     }
 
     public function testGetProductAttributesByProductGroupId()
     {
-
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getProductAttributesByProductGroupId(10);
-
+        $this->client->getProductAttributesByProductGroupId(10);
     }
 
     public function testGetAvailableAttributesByPreselectedAttributes()
     {
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
 
-        $group = $factory->createGroup(2, 'Flyer Klassik', 'group test description', 'test_img.jpg', 'de');
+        $group = $factory->createGroup(
+            2,
+            'Flyer Klassik',
+            'group test description',
+            'test_img.jpg',
+            'de'
+        );
 
-        $attrArray = array(
+        $attrArray = [
             2798 =>
-                array(
+                [
                     'id' => 2798,
                     'name' => 'Ausführung',
                     'sortvalue' => '1',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14562 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN-Format',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14563 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'Rechteck',
                                     'tooltipp' => '',
-                                ),
-                        )
-                ),
+                                ],
+                        ]
+                ],
             2791 =>
-                array(
+                [
                     'id' => 2791,
                     'name' => 'Format',
                     'sortvalue' => '2',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14582 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN A8(5,2 x 7,4 cm)',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14580 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'DIN A7(7,4 x 10,5 cm)',
                                     'tooltipp' => '',
-                                ),
-                        ),
-                )
-        );
+                                ],
+                        ],
+                ]
+        ];
 
         $attributes = $loader->loadAttributeListFromArray($attrArray);
 
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getAvailableAttributesByPreselectedAttributes($group, $attributes);
-
+        $this->client->getAvailableAttributesByPreselectedAttributes($group, $attributes);
     }
-
 
     public function testGetAvailableQuantitiesByAttributes()
     {
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
 
-        $group = $factory->createGroup(2, 'Flyer Klassik', 'group test description', 'test_img.jpg', 'de');
+        $group = $factory->createGroup(
+            2,
+            'Flyer Klassik',
+            'group test description',
+            'test_img.jpg',
+            'de'
+        );
 
-        $attrArray = array(
+        $attrArray = [
             2798 =>
-                array(
+                [
                     'id' => 2798,
                     'name' => 'Ausführung',
                     'sortvalue' => '1',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14562 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN-Format',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14563 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'Rechteck',
                                     'tooltipp' => '',
-                                ),
-                        )
-                ),
+                                ],
+                        ]
+                ],
             2791 =>
-                array(
+                [
                     'id' => 2791,
                     'name' => 'Format',
                     'sortvalue' => '2',
                     'descr' => null,
                     'options' =>
-                        array(
+                        [
                             14582 =>
-                                array(
+                                [
                                     'sortvalue' => '1',
                                     'name' => 'DIN A8(5,2 x 7,4 cm)',
                                     'tooltipp' => '',
-                                ),
+                                ],
                             14580 =>
-                                array(
+                                [
                                     'sortvalue' => '2',
                                     'name' => 'DIN A7(7,4 x 10,5 cm)',
                                     'tooltipp' => '',
-                                ),
-                        ),
-                )
-        );
+                                ],
+                        ],
+                ]
+        ];
 
         $attributes = $loader->loadAttributeListFromArray($attrArray);
 
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getAvailableQuantitiesByAttributes($group, $attributes);
-
+        $this->client->getAvailableQuantitiesByAttributes($group, $attributes);
     }
-
 
     public function testFindProductByQuantityId()
     {
-
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->findProductByQuantityId(12345);
-
+        $this->client->findProductByQuantityId(12345);
     }
 
     public function testGetAvailableProductOptions()
     {
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
 
-        $pArray = array(
+        $pArray = [
             'productId' => 310198,
             'description' => 'DIN A5 (14,8 x 21 cm), 250g Bilderdruck matt, keine Veredelung, DIN-Format',
             'datasheet' => '/sheets/de/flyer_a5_mass.pdf',
             'attributes' =>
-                array(
+                [
                     0 =>
-                        array(
+                        [
                             'attributeGroupId' => 2791,
                             'attributeGroupName' => 'Format',
                             'attributeId' => 14576,
                             'attributeName' => 'DIN A5 (14,8 x 21 cm)',
-                        )
-                )
-        );
+                        ]
+                ]
+        ];
 
         $product = $loader->loadProductFromArray(12345, $pArray);
+        $order = (new \ClientFactoryMock($this->config))->createOrder();
+
+        $order->setProduct($product);
 
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getAvailableProductOptions($product);
-
+        $this->client->getAvailableProductOptions($order);
     }
 
     public function testGetShippingTypeList()
     {
-
         $factory = new ProductFactory();
         $loader = new ProductLoader($this->config, $factory);
 
-        $pArray = array(
+        $pArray = [
             'productId' => 310198,
             'description' => 'DIN A5 (14,8 x 21 cm), 250g Bilderdruck matt, keine Veredelung, DIN-Format',
             'datasheet' => '/sheets/de/flyer_a5_mass.pdf',
             'attributes' =>
-                array(
+                [
                     0 =>
-                        array(
+                        [
                             'attributeGroupId' => 2791,
                             'attributeGroupName' => 'Format',
                             'attributeId' => 14576,
                             'attributeName' => 'DIN A5 (14,8 x 21 cm)',
-                        )
-                )
-        );
+                        ]
+                ]
+        ];
 
         $product = $loader->loadProductFromArray(12345, $pArray);
 
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getShippingTypeList($product);
-
+        $this->client->getShippingTypeList($product);
     }
 
     public function testGetAvailableShippingOptions()
     {
-
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getAvailableShippingOptions($this->api_order);
-
+        $this->client->getAvailableShippingOptions($this->api_order);
     }
 
     public function testGetAvailablePaymentOptions()
     {
-
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->getAvailablePaymentOptions($this->api_order);
-
+        $this->client->getAvailablePaymentOptions($this->api_order);
     }
 
     public function testSendFullOrder()
     {
-
         $this->expectException(SoapCallException::class);
-        $logged = $this->client->sendFullOrder($this->api_order);
-
+        $this->client->sendFullOrder($this->api_order);
     }
-
 
     public function testGetOrderStatus()
     {
-
         $this->expectException(LoginFailException::class);
-        $logged = $this->client->getOrderStatus('DE001234567');
-
+        $this->client->getOrderStatus('DE001234567');
     }
 
     /**
@@ -342,15 +312,12 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductGroupListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createGroupList();
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -358,7 +325,6 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductAttributeListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createAttributeList();
@@ -372,10 +338,8 @@ class ErrorHandlingTest extends TestCase
             $list->hasAttributes()
         );
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -383,20 +347,16 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductAttributePossibleValuesListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createAttributePossibleValuesList();
-
 
         $this->assertFalse(
             $list->hasValues()
         );
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -404,7 +364,6 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductOptionListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createOptionList();
@@ -414,10 +373,8 @@ class ErrorHandlingTest extends TestCase
             $list->hasValues()
         );
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -425,20 +382,16 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductOptionPossibleValuesListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createOptionPossibleValuesList();
-
 
         $this->assertFalse(
             $list->hasValues()
         );
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -446,20 +399,16 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductPaymentOptionListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createPaymentOptionList();
-
 
         $this->assertFalse(
             $list->hasValues()
         );
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -467,11 +416,9 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductQuantityOption()
     {
-
         $factory = new ProductFactory();
 
-        $o = $factory->createQuantityOption(100, array());
-
+        $o = $factory->createQuantityOption(100, []);
 
         $this->assertFalse(
             $o->hasStandardShipping()
@@ -499,8 +446,6 @@ class ErrorHandlingTest extends TestCase
             null,
             $o->getOvernightShippingOption()
         );
-
-
     }
 
     /**
@@ -508,7 +453,6 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductQuantityOptionListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createQuantityOptionList();
@@ -516,7 +460,6 @@ class ErrorHandlingTest extends TestCase
 
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -524,7 +467,6 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductShippingOptionUpgradeListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createShippingOptionUpgradeList();
@@ -545,16 +487,13 @@ class ErrorHandlingTest extends TestCase
 
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
-
 
     /**
      * @covers \flyeralarm\ResellerApi\productCatalog\ProductShippingTypeList
      */
     public function testProductShippingTypeListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createShippingTypeList();
@@ -570,7 +509,6 @@ class ErrorHandlingTest extends TestCase
 
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
 
     /**
@@ -578,7 +516,6 @@ class ErrorHandlingTest extends TestCase
      */
     public function testProductShippingOptionListAdd()
     {
-
         $factory = new ProductFactory();
 
         $list = $factory->createShippingOptionList();
@@ -587,11 +524,7 @@ class ErrorHandlingTest extends TestCase
             $list->hasValues()
         );
 
-
         $this->expectException(AddObjectTypeException::class);
         $list->add($this->api_order);
-
     }
-
-
 }

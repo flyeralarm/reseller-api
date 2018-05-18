@@ -8,21 +8,21 @@ class SoapClientMock extends SoapClient
     public function __call($function_name, $arguments)
     {
         switch ($function_name) {
-            case 'login':
-                if ($arguments[0] == 'test@local.com' && $arguments[1] == '<some-test-pw>') {
-                    $this->last_login = true;
+        case 'login':
+            if ($arguments[0] == 'test@local.com' && $arguments[1] == '<some-test-pw>') {
+                $this->last_login = true;
 
-                    return true;
-                }
-                $this->last_login = false;
-                throw new Exception('SOAP Error ... Access denied.', 999);
+                return true;
+            }
+            $this->last_login = false;
+            throw new Exception('SOAP Error ... Access denied.', 999);
                 break;
 
-            case 'loggedIn':
-                return $this->last_login;
+        case 'loggedIn':
+            return $this->last_login;
 
-            case 'getProductGroupIds':
-                return array(
+        case 'getProductGroupIds':
+            return array(
                     0 =>
                         array(
                             'productgroup_id' => '1',
@@ -103,9 +103,9 @@ class SoapClientMock extends SoapClient
                         )
                 );
 
-            case 'getProductAttributesByGroupId':
-            case 'getAvailableAttributesByPreselectedAttributes':
-                return array(
+        case 'getProductAttributesByGroupId':
+        case 'getAvailableAttributesByPreselectedAttributes':
+            return array(
                     2798 =>
                         array(
                             'id' => 2798,
@@ -152,8 +152,8 @@ class SoapClientMock extends SoapClient
                         )
                 );
 
-            case 'getAvailableQuantitiesByAttributes':
-                return array(
+        case 'getAvailableQuantitiesByAttributes':
+            return array(
                     'quantity_50' =>
                         array(
                             'standard' =>
@@ -222,8 +222,8 @@ class SoapClientMock extends SoapClient
                         ),
                 );
 
-            case 'findProductByQuantityId':
-                return array(
+        case 'findProductByQuantityId':
+            return array(
                     'productId' => 310198,
                     'description' => 'DIN A5 (14,8 x 21 cm), 250g Bilderdruck matt, keine Veredelung, DIN-Format',
                     'datasheet' => '/sheets/de/flyer_a5_mass.pdf',
@@ -260,8 +260,8 @@ class SoapClientMock extends SoapClient
                         ),
                 );
 
-            case 'addProductToCart':
-                return array(
+        case 'addProductToCart':
+            return array(
                     0 =>
                         array(
                             '_id' => 1,
@@ -294,8 +294,8 @@ class SoapClientMock extends SoapClient
                         ),
                 );
 
-            case 'getAvailableProductOptions':
-                return array(
+        case 'getAvailableProductOptions':
+            return array(
                     3 =>
                         array(
                             'name' => 'Datencheck',
@@ -340,8 +340,8 @@ class SoapClientMock extends SoapClient
                         )
                 );
 
-            case 'getAvailableShippingOptions':
-                return array(
+        case 'getAvailableShippingOptions':
+            return array(
                     'shippingoptions' =>
                         array(
                             0 =>
@@ -374,8 +374,8 @@ class SoapClientMock extends SoapClient
                         array(),
                 );
 
-            case 'getAvailablePaymentOptions':
-                return array(
+        case 'getAvailablePaymentOptions':
+            return array(
                     0 =>
                         array(
                             'id' => 1,
@@ -392,11 +392,11 @@ class SoapClientMock extends SoapClient
                         )
                 );
 
-            case 'sendFullOrder':
-                return 'DE001234567';
+        case 'sendFullOrder':
+            return 'DE001234567';
 
-            case 'getOrderStatus':
-                return array(
+        case 'getOrderStatus':
+            return array(
                     0 =>
                         array(
                             'orderId' => 'DE001234567',
@@ -406,8 +406,8 @@ class SoapClientMock extends SoapClient
                         ),
                 );
 
-            default:
-                return false;
+        default:
+            return false;
         }
 
 

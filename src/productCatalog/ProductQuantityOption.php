@@ -3,7 +3,6 @@ namespace flyeralarm\ResellerApi\productCatalog;
 
 use flyeralarm\ResellerApi\productCatalog\ProductQuantityShippingOption;
 
-
 class ProductQuantityOption
 {
     /**
@@ -27,7 +26,7 @@ class ProductQuantityOption
      */
     public function getQuantity()
     {
-        return (int)$this->quantity;
+        return (int) $this->quantity;
     }
 
     /**
@@ -101,5 +100,4 @@ class ProductQuantityOption
 
         return null;
     }
-
 }

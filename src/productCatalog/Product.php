@@ -83,10 +83,9 @@ class Product
         $string = "{{ Product#quantityId=" . $this->quantityId . "&productId=" . $this->productId . " \n";
         $string = $string . "  descr: " . $this->description . " \n";
         $string = $string . "  datasheet: " . $this->datasheet . " \n";
-        $string = $string . "  attributes: " . (string)$this->attributes . " \n";
+        $string = $string . "  attributes: " . (string) $this->attributes . " \n";
         $string = $string . "}} \n";
 
         return $string;
     }
-
 }

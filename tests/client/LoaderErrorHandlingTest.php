@@ -1,9 +1,11 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace flyeralarm\ResellerApi;
+
+use ClientFactoryMock;
+use ConfigMock;
 use flyeralarm\ResellerApi\productCatalog\Factory as ProductFactory;
 use flyeralarm\ResellerApi\productCatalog\Loader as ProductLoader;
-
 use flyeralarm\ResellerApi\exception\ProductGroupArray as ProductGroupArrayException;
 use flyeralarm\ResellerApi\exception\ProductGroupListArray as ProductGroupListArrayException;
 use flyeralarm\ResellerApi\exception\AttributeValueArray as AttributeValueArrayException;
@@ -16,31 +18,26 @@ use flyeralarm\ResellerApi\exception\ShippingTypeArray as ShippingTypeArrayExcep
 use flyeralarm\ResellerApi\exception\ShippingOptionArray as ShippingOptionArrayException;
 use flyeralarm\ResellerApi\exception\PaymentOptionArray as PaymentOptionArrayException;
 
-
-use flyeralarm\ResellerApi\client\Api;
-
 /**
- * @covers flyeralarm\ResellerApi\client\Api
- * @covers flyeralarm\ResellerApi\productCatalog\Loader
- * @covers flyeralarm\ResellerApi\productCatalog\Factory
- * @covers flyeralarm\ResellerApi\client\Factory
- * @covers flyeralarm\ResellerApi\client\Order
- * @covers flyeralarm\ResellerApi\exception\ProductGroupArray as ProductGroupArrayException;
- * @covers flyeralarm\ResellerApi\exception\ProductGroupListArray as ProductGroupListArrayException;
- * @covers flyeralarm\ResellerApi\exception\AttributeValueArray as AttributeValueArrayException;
- * @covers flyeralarm\ResellerApi\exception\AttributePossibleValuesArray as AttributePossibleValuesArrayException;
- * @covers flyeralarm\ResellerApi\exception\AttributeArray as AttributeArrayException;
- * @covers flyeralarm\ResellerApi\exception\QuantityOptionArray as QuantityOptionArrayException;
- * @covers flyeralarm\ResellerApi\exception\QuantityOptionListArray as QuantityOptionListArrayException;
- * @covers flyeralarm\ResellerApi\exception\OptionArray as OptionArrayException;
- * @covers flyeralarm\ResellerApi\exception\ShippingTypeArray as ShippingTypeArrayException;
- * @covers flyeralarm\ResellerApi\exception\ShippingOptionArray as ShippingOptionArrayException;
- * @covers flyeralarm\ResellerApi\exception\PaymentOptionArray as PaymentOptionArrayException;
+ * @covers \flyeralarm\ResellerApi\client\Api
+ * @covers \flyeralarm\ResellerApi\productCatalog\Loader
+ * @covers \flyeralarm\ResellerApi\productCatalog\Factory
+ * @covers \flyeralarm\ResellerApi\client\Factory
+ * @covers \flyeralarm\ResellerApi\client\Order
+ * @covers \flyeralarm\ResellerApi\exception\ProductGroupArray as ProductGroupArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\ProductGroupListArray as ProductGroupListArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\AttributeValueArray as AttributeValueArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\AttributePossibleValuesArray as AttributePossibleValuesArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\AttributeArray as AttributeArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\QuantityOptionArray as QuantityOptionArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\QuantityOptionListArray as QuantityOptionListArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\OptionArray as OptionArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\ShippingTypeArray as ShippingTypeArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\ShippingOptionArray as ShippingOptionArrayException;
+ * @covers \flyeralarm\ResellerApi\exception\PaymentOptionArray as PaymentOptionArrayException;
  */
-class LoaderErrorHandlingTest extends TestCase
+class LoaderErrorHandlingTest extends \PHPUnit\Framework\TestCase
 {
-
-
     /**
      * @var ConfigMock $config
      */
@@ -58,7 +55,6 @@ class LoaderErrorHandlingTest extends TestCase
 
     public function setUp()
     {
-
         $this->config = new ConfigMock();
         $this->config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -67,14 +63,13 @@ class LoaderErrorHandlingTest extends TestCase
 
         $this->factory = new ProductFactory();
         $this->loader = new ProductLoader($this->config, $this->factory);
-
     }
 
     public function testLoadGroupFromArray()
     {
 
         $this->expectException(ProductGroupArrayException::class);
-        $this->loader->loadGroupFromArray(array());
+        $this->loader->loadGroupFromArray([]);
     }
 
     public function testLoadGroupListFromArray()
@@ -95,27 +90,28 @@ class LoaderErrorHandlingTest extends TestCase
     {
 
         $this->expectException(AttributeArrayException::class);
-        $this->loader->loadAttributeFromArray(array());
+        $this->loader->loadAttributeFromArray([]);
     }
 
     public function testLoadAttributePossibleValuesFromArray()
     {
 
         $this->expectException(AttributePossibleValuesArrayException::class);
-        $this->loader->loadAttributeFromArray(array('name' => 'dsf', 'id' => 123, 'options' => array()));
+        $this->loader->loadAttributeFromArray(['name' => 'dsf', 'id' => 123, 'options' => []]);
     }
 
     public function testLoadAttributeValueFromArray()
     {
 
         $this->expectException(AttributeValueArrayException::class);
-        $this->loader->loadAttributeFromArray(array(
-            'name' => 'dsf',
-            'id' => 123,
-            'options' => array('name' => 'sdfsdf', 'id' => 'dsfgsdfg')
-        ));
+        $this->loader->loadAttributeFromArray(
+            [
+                'name' => 'dsf',
+                'id' => 123,
+                'options' => ['name' => 'sdfsdf', 'id' => 'dsfgsdfg']
+            ]
+        );
     }
-
 
     public function testLoadQuantityOptionListFromArray()
     {
@@ -128,28 +124,27 @@ class LoaderErrorHandlingTest extends TestCase
     {
 
         $this->expectException(QuantityOptionListArrayException::class);
-        $this->loader->loadQuantityOptionListFromArray(array('0_2' => array()));
+        $this->loader->loadQuantityOptionListFromArray(['0_2' => []]);
     }
 
     public function testLoadQuantityOptionFromArray()
     {
-
         $this->expectException(QuantityOptionArrayException::class);
-        $this->loader->loadQuantityOptionListFromArray(array('quantity_2' => array('test' => array())));
+        $this->loader->loadQuantityOptionListFromArray(['quantity_2' => ['test' => []]]);
     }
 
     public function testLoadQuantityShippingOptionFromArray()
     {
 
         $this->expectException(QuantityOptionArrayException::class);
-        $this->loader->loadQuantityOptionListFromArray(array('quantity_2' => array('standard' => array())));
+        $this->loader->loadQuantityOptionListFromArray(['quantity_2' => ['standard' => []]]);
     }
 
     public function testLoadProductFromArray()
     {
 
         $this->expectException(AttributeValueArrayException::class);
-        $this->loader->loadProductFromArray(123, array());
+        $this->loader->loadProductFromArray(123, []);
     }
 
     public function testLoadAttributeListFromProductArray()
@@ -163,14 +158,14 @@ class LoaderErrorHandlingTest extends TestCase
     {
 
         $this->expectException(AttributeValueArrayException::class);
-        $this->loader->loadAttributeListFromProductArray(array(1 => null));
+        $this->loader->loadAttributeListFromProductArray([1 => null]);
     }
 
     public function testLoadAttributeFromProductArray()
     {
 
         $this->expectException(AttributeArrayException::class);
-        $this->loader->loadAttributeFromProductArray(array());
+        $this->loader->loadAttributeFromProductArray([]);
     }
 
     public function testLoadOptionsListFromArray()
@@ -198,26 +193,24 @@ class LoaderErrorHandlingTest extends TestCase
     {
 
         $this->expectException(OptionArrayException::class);
-        $this->loader->loadPossibleOptionValuesListFromArray(array(2 => null));
+        $this->loader->loadPossibleOptionValuesListFromArray([2 => null]);
     }
 
     public function testLoadOptionValueFromArray()
     {
 
         $this->expectException(OptionArrayException::class);
-        $this->loader->loadOptionValueFromArray(123, array(2 => null));
+        $this->loader->loadOptionValueFromArray(123, [2 => null]);
     }
 
     public function testLoadShippingTypeListFromArray()
     {
-
         $this->expectException(ShippingTypeArrayException::class);
         $this->loader->loadShippingTypeListFromArray(null);
     }
 
     public function testLoadShippingTypeFromArray()
     {
-
         $this->expectException(ShippingTypeArrayException::class);
         $this->loader->loadShippingTypeFromArray(null);
     }
@@ -245,24 +238,19 @@ class LoaderErrorHandlingTest extends TestCase
 
     public function testLoadShippingOptionListFromArray()
     {
-
         $this->expectException(ShippingOptionArrayException::class);
         $this->loader->loadShippingOptionListFromArray(null);
     }
 
     public function testLoadPaymentOptionListFromArray()
     {
-
         $this->expectException(PaymentOptionArrayException::class);
         $this->loader->loadPaymentOptionListFromArray(null);
     }
 
     public function testLoadPaymentOptionFromArray()
     {
-
         $this->expectException(PaymentOptionArrayException::class);
         $this->loader->loadPaymentOptionFromArray(null);
     }
-
-
 }

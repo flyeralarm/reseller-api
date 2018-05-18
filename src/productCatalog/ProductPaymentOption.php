@@ -1,7 +1,6 @@
 <?php
 namespace flyeralarm\ResellerApi\productCatalog;
 
-
 class ProductPaymentOption
 {
     /**
@@ -76,10 +75,9 @@ class ProductPaymentOption
     public function __toString()
     {
         $string = ' [ PO#' . $this->id . '|' . $this->name . " ->\n";
-        $string = $string . '  price:' . (string)$this->price . " serviceFee:" . (string)$this->serviceFee . ")\n";
+        $string = $string . '  price:' . (string) $this->price . " serviceFee:" . (string) $this->serviceFee . ")\n";
         $string = $string . " ]\n";
 
         return $string;
     }
-
 }

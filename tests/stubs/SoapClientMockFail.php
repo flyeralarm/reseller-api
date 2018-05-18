@@ -2,13 +2,13 @@
 
 class SoapClientMockFail extends SoapClient
 {
-
     private $last_login = false;
 
     public function __call($function_name, $arguments)
     {
+        if($function_name === 'logout')
+            return null;
         throw new Exception('SOAP Error ...', 999);
-
     }
 
     public function __construct($wsdl, $options = null)

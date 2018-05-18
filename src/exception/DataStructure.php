@@ -3,7 +3,6 @@ namespace flyeralarm\ResellerApi\exception;
 
 use flyeralarm\ResellerApi\exception\General as GeneralException;
 
-
 class DataStructure extends GeneralException
 {
 
@@ -14,6 +13,5 @@ class DataStructure extends GeneralException
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

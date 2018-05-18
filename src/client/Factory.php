@@ -1,4 +1,5 @@
 <?php
+
 namespace flyeralarm\ResellerApi\client;
 
 use flyeralarm\ResellerApi\client\Api as ApiClient;
@@ -6,7 +7,6 @@ use flyeralarm\ResellerApi\client\UploadInfo as UploadInfo;
 use flyeralarm\ResellerApi\client\Order as Order;
 use flyeralarm\ResellerApi\config\AbstractConfig as Config;
 use flyeralarm\ResellerApi\productCatalog\Loader as ProductLoader;
-use flyeralarm\ResellerApi\productCatalog\Serializer as ProductSerializer;
 use flyeralarm\ResellerApi\productCatalog\Factory as ProductFactory;
 
 /**
@@ -45,9 +45,10 @@ class Factory
     }
 
     /**
-     * @param string $host The hostname of the server you are trying to connect to. e.g. ClientFactory::ENV_TEST_API
-     * @param string $key The API key that was provided to use for your application.
-     * @return ApiClient
+     * @return Api
+     * @internal param string $host The hostname of the server you are
+     *              trying to connect to. e.g. ClientFactory::ENV_TEST_API
+     * @internal param string $key The API key that was provided to use for your application.
      */
     public function createClient()
     {
@@ -79,7 +80,7 @@ class Factory
 
         $soap_client = new \SoapClient(
             $this->config->getWsdlURI(),
-            array('trace' => true)
+            ['trace' => true]
         );
 
         return $soap_client;
@@ -124,7 +125,6 @@ class Factory
             ->setInvoice($this->createAddress());
 
         return $al;
-
     }
 
     /**
@@ -149,6 +149,4 @@ class Factory
 
         return $o;
     }
-
-
 }

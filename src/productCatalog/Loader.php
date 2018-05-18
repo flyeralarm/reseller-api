@@ -1,9 +1,9 @@
 <?php
+
 namespace flyeralarm\ResellerApi\productCatalog;
 
 use flyeralarm\ResellerApi\config\AbstractConfig as Config;
 use flyeralarm\ResellerApi\productCatalog\Factory as ProductFactory;
-
 use flyeralarm\ResellerApi\exception\ProductGroupArray as ProductGroupArrayException;
 use flyeralarm\ResellerApi\exception\ProductGroupListArray as ProductGroupListArrayException;
 use flyeralarm\ResellerApi\exception\AttributeValueArray as AttributeValueArrayException;
@@ -15,11 +15,11 @@ use flyeralarm\ResellerApi\exception\OptionArray as OptionArrayException;
 use flyeralarm\ResellerApi\exception\ShippingTypeArray as ShippingTypeArrayException;
 use flyeralarm\ResellerApi\exception\ShippingOptionArray as ShippingOptionArrayException;
 use flyeralarm\ResellerApi\exception\PaymentOptionArray as PaymentOptionArrayException;
-
 use flyeralarm\ResellerApi\productCatalog\ProductAttributeList as ProductAttributeList;
 
 /**
  * Class Loader
+ *
  * @package flyeralarm\ResellerApi\productCatalog
  */
 class Loader
@@ -35,7 +35,7 @@ class Loader
     private $factory;
 
     /**
-     * @param Config $config
+     * @param Config  $config
      * @param Factory $factory
      */
     public function __construct(Config $config, ProductFactory $factory)
@@ -53,12 +53,12 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['productgroup_id']) ||
-            !isset($array['_name']) ||
-            !isset($array['_description']) ||
-            !isset($array['_image']) ||
-            !isset($array['_language'])
+        if (!is_array($array)
+            || !isset($array['productgroup_id'])
+            || !isset($array['_name'])
+            || !isset($array['_description'])
+            || !isset($array['_image'])
+            || !isset($array['_language'])
         ) {
             throw new ProductGroupArrayException();
         }
@@ -71,7 +71,6 @@ class Loader
             $array['_image'],
             $array['_language']
         );
-
     }
 
     /**
@@ -82,10 +81,8 @@ class Loader
      */
     public function loadGroupListFromArray($array)
     {
-
         // Check if the array data is valid.
         if (!is_array($array)
-
         ) {
             throw new ProductGroupListArrayException();
         }
@@ -100,7 +97,6 @@ class Loader
 
         // Return the full list.
         return $groupList;
-
     }
 
     /**
@@ -113,14 +109,13 @@ class Loader
      */
     private function loadGroup($productgroup_id, $name, $description, $image_path, $language)
     {
-
         // Create a ProductGroup object.
         return $this->factory->createGroup(
-            (int)$productgroup_id,
-            (string)$name,
-            (string)$description,
-            ((string)$this->config->getImageBase() . (string)$image_path), // Add image base path to uri.
-            (string)$language
+            (int) $productgroup_id,
+            (string) $name,
+            (string) $description,
+            ((string) $this->config->getImageBase() . (string) $image_path), // Add image base path to uri.
+            (string) $language
         );
     }
 
@@ -165,9 +160,9 @@ class Loader
              */
             foreach ($attributes as $old_attr) {
                 $new_attr = $newAttributes->getById($old_attr->getId());
-                if (null !== $new_attr && null !== $old_attr->getSelection()) {
+                if ($new_attr !== null && $old_attr->getSelection() !== null) {
                     $selected_value = $new_attr->getPossibleValues()->getById($old_attr->getSelection()->getId());
-                    if (null !== $selected_value) {
+                    if ($selected_value !== null) {
                         $new_attr->setSelection($selected_value);
                     }
                 }
@@ -186,11 +181,11 @@ class Loader
     public function loadAttributeFromArray($array)
     {
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['name']) ||
-            !isset($array['id']) ||
-            !isset($array['options']) ||
-            !is_array($array['options'])
+        if (!is_array($array)
+            || !isset($array['name'])
+            || !isset($array['id'])
+            || !isset($array['options'])
+            || !is_array($array['options'])
         ) {
             throw new AttributeArrayException();
         }
@@ -199,8 +194,8 @@ class Loader
 
         // Create a AttributeValue object.
         return $this->factory->createAttribute(
-            (int)$array['id'],
-            (string)$array['name'],
+            (int) $array['id'],
+            (string) $array['name'],
             $possible_values
         );
     }
@@ -213,10 +208,9 @@ class Loader
      */
     private function loadAttributePossibleValuesFromArray($array)
     {
-
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !(count($array) > 0)
+        if (!is_array($array)
+            || !(count($array) > 0)
         ) {
             throw new AttributePossibleValuesArrayException();
         }
@@ -229,7 +223,6 @@ class Loader
         }
 
         return $possibleValues;
-
     }
 
     /**
@@ -242,19 +235,18 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['name']) ||
-            !is_numeric($id)
+        if (!is_array($array)
+            || !isset($array['name'])
+            || !is_numeric($id)
         ) {
             throw new AttributeValueArrayException();
         }
 
         // Create a AttributeValue object.
         return $this->factory->createAttributeValue(
-            (int)$id,
-            (string)$array['name']
+            (int) $id,
+            (string) $array['name']
         );
-
     }
 
     /**
@@ -276,9 +268,9 @@ class Loader
             $exploded_key = explode('_', $key);
             $quantity = $exploded_key[1];
 
-            if ('quantity' !== $exploded_key[0] ||
-                !is_numeric($quantity) ||
-                !is_array($value)
+            if ($exploded_key[0] !== 'quantity'
+                || !is_numeric($quantity)
+                || !is_array($value)
             ) {
                 throw new QuantityOptionListArrayException();
             }
@@ -300,11 +292,10 @@ class Loader
     private function loadQuantityOptionFromArray($quantity, $array)
     {
 
-        $shippingOptions = array();
+        $shippingOptions = [];
         foreach ($array as $type => $value) {
-
-            if (!in_array($type, array('standard', 'express', 'overnight')) ||
-                !is_array($value)
+            if (!in_array($type, ['standard', 'express', 'overnight'])
+                || !is_array($value)
             ) {
                 throw new QuantityOptionArrayException();
             }
@@ -314,7 +305,6 @@ class Loader
         }
 
         return $this->factory->createQuantityOption($quantity, $shippingOptions);
-
     }
 
     /**
@@ -326,13 +316,12 @@ class Loader
     private function loadQuantityShippingOptionFromArray($type, $array)
     {
 
-        if (!in_array($type, array('standard', 'express', 'overnight')) ||
-            !isset($array['id']) ||
-            !isset($array['shipping']) ||
-            !isset($array['shipping']['deadline']) ||
-            !isset($array['shipping']['from']) ||
-            !isset($array['shipping']['to'])
-
+        if (!in_array($type, ['standard', 'express', 'overnight'])
+            || !isset($array['id'])
+            || !isset($array['shipping'])
+            || !isset($array['shipping']['deadline'])
+            || !isset($array['shipping']['from'])
+            || !isset($array['shipping']['to'])
         ) {
             throw new QuantityOptionArrayException();
         }
@@ -356,25 +345,29 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['productId']) ||
-            !isset($array['description']) ||
-            !isset($array['datasheet']) ||
-            !isset($array['attributes']) ||
-            !is_numeric($array['productId']) ||
-            !is_numeric($quantityId) ||
-            !is_array($array['attributes'])
+        if (!is_array($array)
+            || !isset($array['productId'])
+            || !isset($array['description'])
+            || !isset($array['datasheet'])
+            || !isset($array['attributes'])
+            || !is_numeric($array['productId'])
+            || !is_numeric($quantityId)
+            || !is_array($array['attributes'])
         ) {
             throw new AttributeValueArrayException();
         }
 
         $attributeList = $this->loadAttributeListFromProductArray($array['attributes']);
 
-        $product = $this->factory->createProduct($quantityId, $array['productId'], $array['description'],
-            ((string)$this->config->getImageBase() . (string)$array['datasheet']), $attributeList);
+        $product = $this->factory->createProduct(
+            $quantityId,
+            $array['productId'],
+            $array['description'],
+            ((string) $this->config->getImageBase() . (string) $array['datasheet']),
+            $attributeList
+        );
 
         return $product;
-
     }
 
     /**
@@ -394,7 +387,6 @@ class Loader
 
         $attributeList = $this->factory->createAttributeList();
         foreach ($array as $key => $value) {
-
             if (!is_array($value)) {
                 throw new AttributeValueArrayException();
             }
@@ -404,7 +396,6 @@ class Loader
         }
 
         return $attributeList;
-
     }
 
     /**
@@ -417,13 +408,13 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['attributeGroupId']) ||
-            !isset($array['attributeId']) ||
-            !isset($array['attributeGroupName']) ||
-            !isset($array['attributeName']) ||
-            !is_numeric($array['attributeGroupId']) ||
-            !is_numeric($array['attributeId'])
+        if (!is_array($array)
+            || !isset($array['attributeGroupId'])
+            || !isset($array['attributeId'])
+            || !isset($array['attributeGroupName'])
+            || !isset($array['attributeName'])
+            || !is_numeric($array['attributeGroupId'])
+            || !is_numeric($array['attributeId'])
         ) {
             throw new AttributeArrayException();
         }
@@ -433,13 +424,14 @@ class Loader
         $value = $this->factory->createAttributeValue($array['attributeId'], $array['attributeName']);
         $options->add($value);
 
-        $attribute = $this->factory->createAttribute($array['attributeGroupId'], $array['attributeGroupName'],
-            $options);
+        $attribute = $this->factory->createAttribute(
+            $array['attributeGroupId'],
+            $array['attributeGroupName'],
+            $options
+        );
         $attribute->setSelection($value);
 
         return $attribute;
-
-
     }
 
     /**
@@ -463,7 +455,6 @@ class Loader
         }
 
         return $optionList;
-
     }
 
     /**
@@ -475,11 +466,11 @@ class Loader
     public function loadOptionFromArray($id, $array)
     {
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['name']) ||
-            !isset($array['options']) ||
-            !is_array($array['options']) ||
-            !is_numeric($id)
+        if (!is_array($array)
+            || !isset($array['name'])
+            || !isset($array['options'])
+            || !is_array($array['options'])
+            || !is_numeric($id)
         ) {
             throw new OptionArrayException();
         }
@@ -489,7 +480,6 @@ class Loader
         $option = $this->factory->createOption($id, $array['name'], $possibleValues);
 
         return $option;
-
     }
 
     /**
@@ -508,8 +498,8 @@ class Loader
 
         $possibleValues = $this->factory->createOptionPossibleValuesList();
         foreach ($array as $key => $value) {
-            if (!is_numeric($key) ||
-                !is_array($value)
+            if (!is_numeric($key)
+                || !is_array($value)
             ) {
                 throw new OptionArrayException();
             }
@@ -521,7 +511,6 @@ class Loader
         }
 
         return $possibleValues;
-
     }
 
     /**
@@ -534,21 +523,25 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['name']) ||
-            !isset($array['description']) ||
-            !isset($array['bruttoPrice']) ||
-            !isset($array['nettoPrice']) ||
-            !is_numeric($id)
+        if (!is_array($array)
+            || !isset($array['name'])
+            || !isset($array['description'])
+            || !isset($array['bruttoPrice'])
+            || !isset($array['nettoPrice'])
+            || !is_numeric($id)
         ) {
             throw new OptionArrayException();
         }
 
-        $value = $this->factory->createOptionValue($id, $array['name'], $array['description'], $array['bruttoPrice'],
-            $array['nettoPrice']);
+        $value = $this->factory->createOptionValue(
+            $id,
+            $array['name'],
+            $array['description'],
+            $array['bruttoPrice'],
+            $array['nettoPrice']
+        );
 
         return $value;
-
     }
 
     /**
@@ -574,7 +567,6 @@ class Loader
         }
 
         return $stList;
-
     }
 
     /**
@@ -586,23 +578,29 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['_id']) ||
-            !isset($array['_name']) ||
-            !isset($array['_from']) ||
-            !isset($array['_to']) ||
-            !isset($array['_deadline']) ||
-            !isset($array['_price_netto']) ||
-            !isset($array['_price_brutto'])
+        if (!is_array($array)
+            || !isset($array['_id'])
+            || !isset($array['_name'])
+            || !isset($array['_from'])
+            || !isset($array['_to'])
+            || !isset($array['_deadline'])
+            || !isset($array['_price_netto'])
+            || !isset($array['_price_brutto'])
         ) {
             throw new ShippingTypeArrayException();
         }
 
-        $st = $this->factory->createShippingType($array['_id'], $array['_name'], $array['_from'], $array['_to'],
-            $array['_deadline'], $array['_price_brutto'], $array['_price_netto']);
+        $st = $this->factory->createShippingType(
+            $array['_id'],
+            $array['_name'],
+            $array['_from'],
+            $array['_to'],
+            $array['_deadline'],
+            $array['_price_brutto'],
+            $array['_price_netto']
+        );
 
         return $st;
-
     }
 
     /**
@@ -614,18 +612,23 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['id']) ||
-            !isset($array['name']) ||
-            !isset($array['defaultName']) ||
-            !isset($array['price']) ||
-            !isset($array['priceWithTax'])
+        if (!is_array($array)
+            || !isset($array['id'])
+            || !isset($array['name'])
+            || !isset($array['defaultName'])
+            || !isset($array['price'])
+            || !isset($array['priceWithTax'])
         ) {
             throw new ShippingOptionArrayException();
         }
 
-        $sou = $this->factory->createShippingOptionUpgrade($array['id'], $array['name'], $array['defaultName'],
-            $array['price'], $array['priceWithTax']);
+        $sou = $this->factory->createShippingOptionUpgrade(
+            $array['id'],
+            $array['name'],
+            $array['defaultName'],
+            $array['price'],
+            $array['priceWithTax']
+        );
 
         return $sou;
     }
@@ -663,19 +666,19 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['id']) ||
-            !isset($array['name']) ||
-            !isset($array['defaultName']) ||
-            !isset($array['price']) ||
-            !isset($array['priceWithTax'])
+        if (!is_array($array)
+            || !isset($array['id'])
+            || !isset($array['name'])
+            || !isset($array['defaultName'])
+            || !isset($array['price'])
+            || !isset($array['priceWithTax'])
         ) {
             throw new ShippingOptionArrayException();
         }
 
-        if (isset($array['upgrades']) &&
-            is_array($array['upgrades']) &&
-            !empty($array['upgrades'])
+        if (isset($array['upgrades'])
+            && is_array($array['upgrades'])
+            && !empty($array['upgrades'])
         ) {
             $soul = $this->loadShippingOptionUpgradeListFromArray($array['upgrades']);
         } else {
@@ -683,11 +686,16 @@ class Loader
         }
 
 
-        $so = $this->factory->createShippingOption($array['id'], $array['name'], $array['defaultName'], $array['price'],
-            $array['priceWithTax'], $soul);
+        $so = $this->factory->createShippingOption(
+            $array['id'],
+            $array['name'],
+            $array['defaultName'],
+            $array['price'],
+            $array['priceWithTax'],
+            $soul
+        );
 
         return $so;
-
     }
 
     /**
@@ -700,9 +708,9 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['shippingoptions']) ||
-            !is_array($array['shippingoptions'])
+        if (!is_array($array)
+            || !isset($array['shippingoptions'])
+            || !is_array($array['shippingoptions'])
         ) {
             throw new ShippingOptionArrayException();
         }
@@ -716,7 +724,6 @@ class Loader
         }
 
         return $sol;
-
     }
 
     /**
@@ -738,11 +745,9 @@ class Loader
         foreach ($array as $value) {
             $po = $this->loadPaymentOptionFromArray($value);
             $pol->add($po);
-
         }
 
         return $pol;
-
     }
 
     /**
@@ -754,11 +759,11 @@ class Loader
     {
 
         // Check if the array data is valid.
-        if (!is_array($array) ||
-            !isset($array['id']) ||
-            !isset($array['name']) ||
-            !isset($array['price']) ||
-            !isset($array['serviceFee'])
+        if (!is_array($array)
+            || !isset($array['id'])
+            || !isset($array['name'])
+            || !isset($array['price'])
+            || !isset($array['serviceFee'])
         ) {
             throw new PaymentOptionArrayException();
         }
@@ -767,6 +772,4 @@ class Loader
 
         return $po;
     }
-
-
 }

@@ -1,46 +1,36 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace flyeralarm\ResellerApi\client;
 
-use flyeralarm\ResellerApi\client\Api;
-use flyeralarm\ResellerApi\client\UploadInfo;
+use ClientFactoryMock;
+use ConfigMock;
 use flyeralarm\ResellerApi\productCatalog\Factory as ProductFactory;
 use flyeralarm\ResellerApi\productCatalog\Loader as ProductLoader;
-use flyeralarm\ResellerApi\productCatalog\ProductShippingType;
-use flyeralarm\ResellerApi\productCatalog\Product;
-use flyeralarm\ResellerApi\productCatalog\ProductOptionList;
-use flyeralarm\ResellerApi\productCatalog\ProductOption;
-use flyeralarm\ResellerApi\client\AddressList;
 use flyeralarm\ResellerApi\productCatalog\ProductShippingOption;
 use flyeralarm\ResellerApi\productCatalog\ProductShippingOptionUpgrade;
 use flyeralarm\ResellerApi\productCatalog\ProductPaymentOption;
 use flyeralarm\ResellerApi\exception\OrderPersistencyData as OrderPersistencyDataException;
 
-
 /**
- * @covers flyeralarm\ResellerApi\client\Api
- * @covers flyeralarm\ResellerApi\productCatalog\Loader
- * @covers flyeralarm\ResellerApi\productCatalog\Factory
- * @covers flyeralarm\ResellerApi\client\Factory
- * @covers flyeralarm\ResellerApi\client\Order
- * @covers flyeralarm\ResellerApi\client\Address
- * @covers flyeralarm\ResellerApi\client\AddressList
- * @covers flyeralarm\ResellerApi\client\UploadInfo
- * @covers flyeralarm\ResellerApi\lib\AbstractList
- * @covers flyeralarm\ResellerApi\exception\OrderPersistencyData
- * @covers flyeralarm\ResellerApi\exception\General
- * @covers flyeralarm\ResellerApi\exception\Connection
- * @covers flyeralarm\ResellerApi\exception\ArrayAccess
- * @covers flyeralarm\ResellerApi\exception\DataStructure
+ * @covers \flyeralarm\ResellerApi\client\Api
+ * @covers \flyeralarm\ResellerApi\productCatalog\Loader
+ * @covers \flyeralarm\ResellerApi\productCatalog\Factory
+ * @covers \flyeralarm\ResellerApi\client\Factory
+ * @covers \flyeralarm\ResellerApi\client\Order
+ * @covers \flyeralarm\ResellerApi\client\Address
+ * @covers \flyeralarm\ResellerApi\client\AddressList
+ * @covers \flyeralarm\ResellerApi\client\UploadInfo
+ * @covers \flyeralarm\ResellerApi\lib\AbstractList
+ * @covers \flyeralarm\ResellerApi\exception\OrderPersistencyData
+ * @covers \flyeralarm\ResellerApi\exception\General
+ * @covers \flyeralarm\ResellerApi\exception\Connection
+ * @covers \flyeralarm\ResellerApi\exception\ArrayAccess
+ * @covers \flyeralarm\ResellerApi\exception\DataStructure
  */
-class OrderDataTest extends TestCase
+class OrderDataTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testOrder()
     {
-
-
         $config = new ConfigMock();
         $config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -52,7 +42,13 @@ class OrderDataTest extends TestCase
 
 
         $order = $factory->createOrder();
-        $order->loadByPersistencyString("eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9rVZaeWXLJ3hT0HI2X0xnDS/BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9ope6cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPqRU5fxeTVm1XjC+Lzgs3Zat4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E=");
+        $order->loadByPersistencyString(
+            'eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G'.
+            '9rVZaeWXLJ3hT0HI2X0xnDS/BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/G'.
+            'JB6ldOR9ope6cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBP'.
+            'ooe6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPqRU5f'.
+            'xeTVm1XjC+Lzgs3Zat4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E='
+        );
 
         $this->assertEquals(
             10785691,
@@ -89,9 +85,9 @@ class OrderDataTest extends TestCase
             $order->getAddressHandling()
         );
 
-        $checkAddress = array(
+        $checkAddress = [
             'sender' =>
-                array(
+                [
                     'company' => '',
                     'gender' => 'male',
                     'firstName' => 'Max',
@@ -103,9 +99,9 @@ class OrderDataTest extends TestCase
                     'county' => null,
                     'locale' => null,
                     'phone1' => '+4993146584',
-                ),
+                ],
             'delivery' =>
-                array(
+                [
                     'company' => '',
                     'gender' => 'male',
                     'firstName' => 'Max',
@@ -117,9 +113,9 @@ class OrderDataTest extends TestCase
                     'county' => null,
                     'locale' => null,
                     'phone1' => '+4993146584',
-                ),
+                ],
             'invoice' =>
-                array(
+                [
                     'company' => '',
                     'gender' => 'male',
                     'firstName' => 'Max',
@@ -131,8 +127,8 @@ class OrderDataTest extends TestCase
                     'county' => null,
                     'locale' => null,
                     'phone1' => '+4993146584',
-                ),
-        );
+                ],
+        ];
         $this->assertEquals(
             $checkAddress,
             $order->getAddressList()->getArray()
@@ -158,10 +154,6 @@ class OrderDataTest extends TestCase
             $order->getProduct()
         );
 
-
-        $string = $order->getPersistencyString();
-
-
         $this->assertEquals(
             null,
             $order->getCustomHeight()
@@ -179,24 +171,22 @@ class OrderDataTest extends TestCase
 
         date_default_timezone_set('Europe/Berlin');
 
-        $infoCheck = array(
+        $infoCheck = [
             'dataTransferType' => 'upload',
             'dataTransferTime' => date('d.m.Y H:i:s'),
             'dataTransferText' => 'Automatic Upload via Api.',
-        );
+            'referenceText' => 'Automatic Upload via Api.',
+        ];
 
         $this->assertEquals(
             $infoCheck,
             $order->getUploadInfo()->getArray()
         );
-
-
     }
 
 
     public function testSetters()
     {
-
         $config = new ConfigMock();
         $config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -211,7 +201,7 @@ class OrderDataTest extends TestCase
         $order = $cfactory->createOrder();
 
         $shippingType = $loader->loadShippingTypeFromArray(
-            array(
+            [
                 '_id' => 12345,
                 '_name' => 'Standard',
                 '_from' => '20',
@@ -219,7 +209,7 @@ class OrderDataTest extends TestCase
                 '_deadline' => '10',
                 '_price_netto' => 19.18,
                 '_price_brutto' => 22.824200000000001,
-            )
+            ]
         );
 
         $order->setShippingType($shippingType);
@@ -230,29 +220,29 @@ class OrderDataTest extends TestCase
         );
 
         $pol = $loader->loadOptionsListFromArray(
-            array(
+            [
                 3 =>
-                    array(
+                    [
                         'name' => 'Datencheck',
                         'options' =>
-                            array(
+                            [
                                 3001 =>
-                                    array(
+                                    [
                                         'name' => 'Basis-Datencheck',
                                         'description' => 'Datencheck: Basis-Datencheck',
                                         'bruttoPrice' => '0,00 €',
                                         'nettoPrice' => '0,00 €',
-                                    ),
+                                    ],
                                 3002 =>
-                                    array(
+                                    [
                                         'name' => 'Profi-Datencheck',
                                         'description' => 'Datencheck: Profi-Datencheck',
                                         'bruttoPrice' => '5,00 €',
                                         'nettoPrice' => '5,95 €',
-                                    ),
-                            ),
-                    )
-            )
+                                    ],
+                            ],
+                    ]
+            ]
         );
 
         $pol->getById(3)->setSelection($pol->getById(3)->getPossibleValues()->getById(3001));
@@ -260,7 +250,7 @@ class OrderDataTest extends TestCase
         $order->setProductOptions($pol);
 
         $this->assertEquals(
-            array(3 => 3001),
+            [3 => 3001],
             $order->getProductOptionsArray()
         );
 
@@ -339,7 +329,6 @@ class OrderDataTest extends TestCase
             $order->getAddressHandling()
         );
 
-
         $this->assertEquals(
             6789,
             $order->getResellerPrice()
@@ -354,13 +343,10 @@ class OrderDataTest extends TestCase
             6677,
             $order->getCustomWidth()
         );
-
-
     }
 
     public function testFaultyPersistencyString()
     {
-
         $config = new ConfigMock();
         $config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -374,13 +360,10 @@ class OrderDataTest extends TestCase
 
         $this->expectException(OrderPersistencyDataException::class);
         $order->loadByPersistencyString("uselessString!");
-
     }
-
 
     public function testFaultyPersistencyString2()
     {
-
         $config = new ConfigMock();
         $config->setResellerUserEmail('test@local.com')
             ->setResellerUserPassword('<some-test-pw>')
@@ -394,8 +377,9 @@ class OrderDataTest extends TestCase
 
 
         $this->expectException(OrderPersistencyDataException::class);
-        $order->loadByPersistencyString('eJyrVirMVLIyNDC3MDWzNNRRKi4Bco10lAryE5Ws8kpzcnSUEjOUrIyBMvlAGSVDJZAcSAtQpDQTpqYIrjq5HM7KgLBqAXdvHVc=');
-
+        $order->loadByPersistencyString(
+            'eJyrVirMVLIyNDC3MDWzNNRRKi4Bco10lAryE5Ws8kpzcnSUEjOUrIyBMvlAGSVDJZ'.
+            'AcSAtQpDQTpqYIrjq5HM7KgLBqAXdvHVc='
+        );
     }
-
 }

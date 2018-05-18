@@ -8,7 +8,6 @@
 
 namespace flyeralarm\ResellerApi\exception;
 
-
 class OptionArray extends DataStructure
 {
 
@@ -19,6 +18,5 @@ class OptionArray extends DataStructure
     ) {
 
         return parent::__construct($message, $code, $previous);
-
     }
 }

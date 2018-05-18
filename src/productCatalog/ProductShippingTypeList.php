@@ -1,4 +1,5 @@
 <?php
+
 namespace flyeralarm\ResellerApi\productCatalog;
 
 use flyeralarm\ResellerApi\lib\AbstractList as AbstractList;
@@ -7,7 +8,6 @@ use flyeralarm\ResellerApi\exception\AddObjectType as AddObjectTypeException;
 
 class ProductShippingTypeList extends AbstractList
 {
-
     /**
      * @param mixed $item
      * @throws AddObjectTypeException
@@ -57,12 +57,10 @@ class ProductShippingTypeList extends AbstractList
     {
         $string = "  { \n";
         foreach ($this as $value) {
-            $string = $string . "   " . (string)$value . " \n";
+            $string = $string . "   " . (string) $value . " \n";
         }
         $string = $string . '  }';
 
         return $string;
     }
-
-
 }

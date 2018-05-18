@@ -1,4 +1,5 @@
 <?php
+
 namespace flyeralarm\ResellerApi\productCatalog;
 
 use flyeralarm\ResellerApi\lib\AbstractList as AbstractList;
@@ -13,17 +14,20 @@ class GroupList extends AbstractList
 
     /**
      * Add an Item to the list.
-     * @param mixed $item
-     * @return void
+     *
+     * @param  mixed $item
+     * @return null
+     * @throws AddObjectTypeException
      */
     public function add($item)
     {
-
         if (!$item instanceof ProductGroup) {
-            throw new AddObjectTypeException('GroupList only accepts objects of type Group', 5081);
+            throw new AddObjectTypeException(
+                'GroupList only accepts objects of type Group',
+                5081
+            );
         }
 
         $this->elements[] = $item;
     }
-
 }

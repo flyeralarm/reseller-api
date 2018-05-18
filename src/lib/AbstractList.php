@@ -25,21 +25,22 @@ abstract class AbstractList implements PHPArrayAccess, PHPCountable, PHPIterator
      */
     public function __construct()
     {
-        $this->elements = array();
+        $this->elements = [];
     }
 
     /**
      * Add an Item to the list.
-     * @param mixed $item
-     * @return void
+     *
+     * @param  mixed $item
+     * @return null
      */
     abstract public function add($item);
 
     /**
      * Required for interface PHPArrayAccess.
-     * @param mixed $offset
-     * @return boolean
      *
+     * @param  mixed $offset
+     * @return bool
      */
     final public function offsetExists($offset)
     {
@@ -48,8 +49,9 @@ abstract class AbstractList implements PHPArrayAccess, PHPCountable, PHPIterator
 
     /**
      * Required for interface PHPArrayAccess.
-     * @param mixed $offset
-     * @return mixed
+     *
+     * @param  mixed $offset
+     * @return string|null
      */
     final public function offsetGet($offset)
     {
@@ -62,9 +64,11 @@ abstract class AbstractList implements PHPArrayAccess, PHPCountable, PHPIterator
 
     /**
      * Required for interface PHPArrayAccess.
-     * @param mixed $offset
-     * @param mixed $value
-     * @return void
+     *
+     * @param  mixed $offset
+     * @param  mixed $value
+     * @return null
+     * @throws ArrayAccessException
      */
     final public function offsetSet($offset, $value)
     {
@@ -73,8 +77,9 @@ abstract class AbstractList implements PHPArrayAccess, PHPCountable, PHPIterator
 
     /**
      * Required for interface PHPArrayAccess.
-     * @param mixed $offset
-     * @return void
+     *
+     * @param  mixed $offset
+     * @return null
      */
     final public function offsetUnset($offset)
     {
@@ -83,6 +88,7 @@ abstract class AbstractList implements PHPArrayAccess, PHPCountable, PHPIterator
 
     /**
      * Required for interface PHPCountable.
+     *
      * @return int
      */
     final public function count()
@@ -115,5 +121,4 @@ abstract class AbstractList implements PHPArrayAccess, PHPCountable, PHPIterator
     {
         return isset($this->elements[$this->array_position]);
     }
-
 }

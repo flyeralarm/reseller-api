@@ -3,7 +3,7 @@ namespace flyeralarm\ResellerApi\config;
 
 use flyeralarm\ResellerApi\config\AbstractConfig as AbstractConfig;
 
-class TestDE_Internal extends AbstractConfig
+class TestDEInternal extends AbstractConfig
 {
 
     protected $wsdl_uri = 'https://staging.flyeralarm.com/de/shop/soap/?wsdl';
@@ -13,5 +13,4 @@ class TestDE_Internal extends AbstractConfig
     protected $api_rest_base = 'https://api.staging.flyeralarm/de';
 
     protected $api_rest_ssl_check = false;
-
 }

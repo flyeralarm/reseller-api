@@ -349,16 +349,18 @@ class Loader
             || !isset($array['productId'])
             || !isset($array['description'])
             || !isset($array['datasheet'])
-            || !isset($array['attributes'])
             || !is_numeric($array['productId'])
             || !is_numeric($quantityId)
-            || !is_array($array['attributes'])
         ) {
+
             throw new AttributeValueArrayException();
+
         }
-
-        $attributeList = $this->loadAttributeListFromProductArray($array['attributes']);
-
+        if (!isset($array['attributes']) && !is_array($array['attributes'])) {
+            $attributeList = new ProductAttributeList();
+        } else {
+            $attributeList = $this->loadAttributeListFromProductArray($array['attributes']);
+        }
         $product = $this->factory->createProduct(
             $quantityId,
             $array['productId'],

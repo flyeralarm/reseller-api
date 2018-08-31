@@ -102,6 +102,14 @@ class Api
     }
 
     /**
+     * Returns the product loader
+     */
+    public function getProductLoader()
+    {
+        return $this->$product_loader;
+    }
+
+    /**
      * Returns a List of all ProductGroups
      *
      * @return \flyeralarm\ResellerApi\productCatalog\GroupList

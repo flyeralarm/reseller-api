@@ -106,7 +106,7 @@ class Api
      */
     public function getProductLoader()
     {
-        return $this->$product_loader;
+        return $this->product_loader;
     }
 
     /**

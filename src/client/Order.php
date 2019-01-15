@@ -367,6 +367,19 @@ class Order
                     ->setLocale($array['al']['sender']['locale'])
                     ->setPhone1($array['al']['sender']['phone1']);
 
+                if(isset($array['al']['sender']['customertype'])){
+                    $sender
+                        ->setCustomerType($array['al']['sender']['customertype']);
+                }
+                if(isset($array['al']['sender']['vatnumber'])){
+                    $sender
+                        ->setVatNumber($array['al']['sender']['vatnumber']);
+                }
+                if(isset($array['al']['delivery']['taxnumber'])){
+                    $sender
+                        ->setTaxNumber($array['al']['sender']['taxnumber']);
+                }
+
                 $this->addressList->setSender($sender);
             }
 
@@ -386,6 +399,19 @@ class Order
                     ->setLocale($array['al']['delivery']['locale'])
                     ->setPhone1($array['al']['delivery']['phone1']);
 
+                if(isset($array['al']['delivery']['customertype'])){
+                    $delivery
+                        ->setCustomerType($array['al']['delivery']['customertype']);
+                }
+                if(isset($array['al']['delivery']['vatnumber'])){
+                    $delivery
+                        ->setVatNumber($array['al']['delivery']['vatnumber']);
+                }
+                if(isset($array['al']['delivery']['taxnumber'])){
+                    $delivery
+                        ->setTaxNumber($array['al']['delivery']['taxnumber']);
+                }
+
                 $this->addressList->setDelivery($delivery);
             }
 
@@ -404,6 +430,20 @@ class Order
                     ->setCounty($array['al']['invoice']['county'])
                     ->setLocale($array['al']['invoice']['locale'])
                     ->setPhone1($array['al']['invoice']['phone1']);
+
+                if(isset($array['al']['invoice']['customertype'])){
+                    $invoice
+                        ->setCustomerType($array['al']['invoice']['customertype']);
+                }
+                if(isset($array['al']['invoice']['vatnumber'])){
+                    $invoice
+                        ->setVatNumber($array['al']['invoice']['vatnumber']);
+                }
+                if(isset($array['al']['invoice']['taxnumber'])){
+                    $invoice
+                        ->setTaxNumber($array['al']['invoice']['taxnumber']);
+                }
+
 
                 $this->addressList->setInvoice($invoice);
             }

@@ -48,6 +48,18 @@ class Address
      * @var string
      */
     private $phone1 = null;
+    /**
+     * @var integer
+     */
+    private $customerType = null;
+    /**
+     * @var string
+     */
+    private $taxNumber = null;
+    /**
+     * @var string
+     */
+    private $vatNumber = null;
 
     /**
      * @param $company
@@ -171,6 +183,36 @@ class Address
     }
 
     /**
+     * @param int $customerType
+     */
+    public function setCustomerType($customerType)
+    {
+        $this->customerType = $customerType;
+
+        return $this;
+    }
+
+    /**
+     * @param string $taxNumber
+     */
+    public function setTaxNumber($taxNumber)
+    {
+        $this->taxNumber = $taxNumber;
+
+        return $this;
+    }
+
+    /**
+     * @param string $vatNumber
+     */
+    public function setVatNumber($vatNumber)
+    {
+        $this->vatNumber = $vatNumber;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getCompany()
@@ -259,11 +301,38 @@ class Address
     }
 
     /**
+     * @return int
+     */
+    public function getCustomerType()
+    {
+        return $this->customerType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxNumber()
+    {
+        return $this->taxNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVatNumber()
+    {
+        return $this->vatNumber;
+    }
+
+    /**
      * @return array
      */
     public function getArray()
     {
         return [
+            'customertype' => $this->getCustomerType(),
+            'vatnumber' => $this->getVatNumber(),
+            'taxnumber' => $this->getTaxNumber(),
             'company' => $this->getCompany(),
             'gender' => $this->getGender(),
             'firstName' => $this->getFirstName(),

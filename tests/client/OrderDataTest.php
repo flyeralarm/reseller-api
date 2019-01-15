@@ -88,6 +88,9 @@ class OrderDataTest extends \PHPUnit\Framework\TestCase
         $checkAddress = [
             'sender' =>
                 [
+                    'customertype' => null,
+                    'vatnumber' => null,
+                    'taxnumber' => null,
                     'company' => '',
                     'gender' => 'male',
                     'firstName' => 'Max',
@@ -102,6 +105,9 @@ class OrderDataTest extends \PHPUnit\Framework\TestCase
                 ],
             'delivery' =>
                 [
+                    'customertype' => null,
+                    'vatnumber' => null,
+                    'taxnumber' => null,
                     'company' => '',
                     'gender' => 'male',
                     'firstName' => 'Max',
@@ -116,6 +122,9 @@ class OrderDataTest extends \PHPUnit\Framework\TestCase
                 ],
             'invoice' =>
                 [
+                    'customertype' => null,
+                    'vatnumber' => null,
+                    'taxnumber' => null,
                     'company' => '',
                     'gender' => 'male',
                     'firstName' => 'Max',

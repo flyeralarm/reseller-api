@@ -356,7 +356,7 @@ class Loader
             throw new AttributeValueArrayException();
 
         }
-        if (!isset($array['attributes']) && !is_array($array['attributes'])) {
+        if (!isset($array['attributes']) || !is_array($array['attributes'])) {
             $attributeList = new ProductAttributeList();
         } else {
             $attributeList = $this->loadAttributeListFromProductArray($array['attributes']);

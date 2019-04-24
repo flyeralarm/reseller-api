@@ -5,6 +5,7 @@ The purpose of this repository is to offer a PHP Binding for the FLYERALARM Rese
 Please take a look at our examples repository to see how it should be used.
 
 For further details and questions, please contact esolutions@flyeralarm.com
+
 ### Setup
 
 - composer needs to be installed https://getcomposer.org

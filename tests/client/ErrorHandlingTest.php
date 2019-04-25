@@ -295,6 +295,18 @@ class ErrorHandlingTest extends \PHPUnit\Framework\TestCase
         $this->client->getAvailablePaymentOptions($this->api_order);
     }
 
+    public function testCurrentNetPriceTest()
+    {
+        $this->expectException(SoapCallException::class);
+        $netPrice = $this->client->getCurrentNetPrice($this->api_order);
+    }
+
+    public function testCurrentGrossPriceTest()
+    {
+        $this->expectException(SoapCallException::class);
+        $grossPrice = $this->client->getCurrentGrossPrice($this->api_order);
+    }
+
     public function testSendFullOrder()
     {
         $this->expectException(SoapCallException::class);

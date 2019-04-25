@@ -1347,7 +1347,7 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testCustomFormatTest()
+    public function testCurrentPriceTest()
     {
         $api_order = $this->factory->createOrder();
         $api_order->loadByPersistencyString(

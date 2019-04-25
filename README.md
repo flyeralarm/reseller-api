@@ -60,3 +60,4 @@ Notes: PHPUnit Version ranges currently from 5-8 to Support PHP 5.6 and all abov
  * 5150 Some REST call to the FLYERALARM API failed.
  * 5151 FLYERALARM API Call: Unable to reserve an UploadTarget URL.
  * 5152 FLYERALARM API Call: Unable to upload printing data.
+ * 5160 FLYERALARM API Call: Unable to fetch cart.

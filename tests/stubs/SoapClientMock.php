@@ -391,7 +391,24 @@ class SoapClientMock extends SoapClient
                             'serviceFee' => 0,
                         )
                 );
-
+        case 'getCurrentCart':
+              return
+                  array(
+                      "netPrice" =>  45.11,
+                      "provisionValue" => "-10.00",
+                      "priceProvisionNet" => 40.6,
+                      "tax" => 7.71,
+                      "grossPrice" => 48.31,
+                      "carts" =>
+                          array(
+                              0 => array(
+                                  "quantityId" => 11119750,
+                                  "shippingType" => 1,
+                                  "created" => "2019-04-25 13:42:24",
+                                  "quantity" => 100
+                              )
+                          )
+                  );
         case 'sendFullOrder':
             return 'DE001234567';
 

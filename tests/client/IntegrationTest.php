@@ -1346,4 +1346,27 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
             $return
         );
     }
+
+    public function testCustomFormatTest()
+    {
+        $api_order = $this->factory->createOrder();
+        $api_order->loadByPersistencyString(
+            'eJyrVirMVLIyBAJLc1MDHaXiEiA3rzQnR0epID8RxkzMgbMygKqByvKRlMGZxaVwJoJVBDcluVzJysgAaEky0BBjY4NaAE1dJck='
+        );
+
+        $netPrice = $this->client->getCurrentNetPrice($api_order);
+
+        $this->assertEquals(
+            45.11,
+            $netPrice
+        );
+
+        $grossPrice = $this->client->getCurrentGrossPrice($api_order);
+
+        $this->assertEquals(
+            48.31,
+            $grossPrice
+        );
+
+    }
 }

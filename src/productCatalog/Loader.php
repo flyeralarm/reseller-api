@@ -352,9 +352,7 @@ class Loader
             || !is_numeric($array['productId'])
             || !is_numeric($quantityId)
         ) {
-
             throw new AttributeValueArrayException();
-
         }
         if (!isset($array['attributes']) || !is_array($array['attributes'])) {
             $attributeList = new ProductAttributeList();

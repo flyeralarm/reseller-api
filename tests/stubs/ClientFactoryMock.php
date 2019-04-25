@@ -8,7 +8,7 @@ class ClientFactoryMock extends ClientFactory
     {
         $soap_client = new SoapClientMock(
             $this->config->getWsdlURI(),
-            array('trace' => true)
+            ['trace' => true]
         );
 
         return $soap_client;

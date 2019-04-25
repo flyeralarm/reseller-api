@@ -8,7 +8,7 @@ sniff:
 ##fixes autoamatically and shows sniffs that cannot be fixed automatically
 fixnsniff: fix sniff
 
-fix: sniff
+fix:
 	php vendor/bin/phpcbf --standard=vendor/flyeralarm/php-code-validator/ruleset.xml src
 
 test:

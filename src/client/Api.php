@@ -413,19 +413,19 @@ class Api
      * @return float
      * @throws SoapCallException
      */
-    public function getCurrentNetPrice(Order $order){
+    public function getCurrentNetPrice(Order $order)
+    {
 
         try {
             $this->login();
             $this->addProductToCart($order->getQuantityId(), $order->getCustomWidth(), $order->getCustomHeight());
             $array = $this->api_client->getCurrentCart();
-            $price = (float)$array["netPrice"];
+            $price = (float) $array["netPrice"];
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get current cart.", 5160, $e);
         }
 
         return $price;
-
     }
 
     /**
@@ -433,19 +433,19 @@ class Api
      * @return float
      * @throws SoapCallException
      */
-    public function getCurrentGrossPrice(Order $order){
+    public function getCurrentGrossPrice(Order $order)
+    {
 
         try {
             $this->login();
             $this->addProductToCart($order->getQuantityId(), $order->getCustomWidth(), $order->getCustomHeight());
             $array = $this->api_client->getCurrentCart();
-            $price = (float)$array["grossPrice"];
+            $price = (float) $array["grossPrice"];
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get current cart.", 5160, $e);
         }
 
         return $price;
-
     }
 
     /**

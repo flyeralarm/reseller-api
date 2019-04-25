@@ -74,10 +74,10 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
 
         $this->api_order = $this->factory->createOrder();
         $this->api_order->loadByPersistencyString(
-            'eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9rVZaeWXLJ3hT0HI2X0xnDS/'.
-            'BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9ope6'.
-            'cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe'.
-            '6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPq'.
+            'eJzlU8tywjAM/JWMrg2MTcIjufEB5VI6vfQibAU849ipHxTK8O+1odBpP6G9rVZaeWXLJ3hT0HI2X0xnDS/' .
+            'BhxROShgsQmui1iWghvYEnowkl5Gw/YDmCC1ACdsvGnrUlOJOOR9W2FOiHvGQGI3fRPSBXI/GJB6ldOR9ope6' .
+            'cyRHK7shPXoKDl8jY7Kjgi++65ZS3gwN1gdhZe7YzNmcpSKhQjb0kpWdcB+b6LaZttHkxFWnrcgmb1121hBPooe' .
+            '6aSpez6aLGs4lSNJqT+74D0ZVZm+VoD8/aRoVd9BWab1tWm/gkM/Le5+YqG7ijE4gMeDaofEdufVxyIbioC3KJPq' .
             'RU5fxeTVm1XjC+Lzgs3Zat4z9LqRDyBcSg+0xKFE8X9oVe4XFclDj/BLu/tvE+x3truj8CR0JJ/E='
         );
     }
@@ -123,7 +123,7 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
                 'name' => 'Sitzsack, nur Druck',
                 'desc' => 'some HTML',
                 'lang' => 'de',
-                'img' => 'https://unittest.flyeralarm.local/images/upload/content/products/'.
+                'img' => 'https://unittest.flyeralarm.local/images/upload/content/products/' .
                     'Sitzsack/flyeralarm-sitzsack-nurdruck-260x260.jpg',
             ],
             1 => [
@@ -131,7 +131,7 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
                 'name' => 'Flyer Klassiker',
                 'desc' => 'some HTML will go here',
                 'lang' => 'de',
-                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/'.
+                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/' .
                     'config/flyeralarm-flyer-klassiker-240x200-config.jpg',
             ],
             2 => [
@@ -139,7 +139,7 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
                 'name' => 'Aluminiumverbundplatte weiß im Wunschformat ',
                 'desc' => 'some HTML Code will go here.',
                 'lang' => 'de',
-                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/'.
+                'img' => 'https://unittest.flyeralarm.local/images/upload/content/images/products/flyer/' .
                     'config/flyeralarm-flyer-klassiker-240x200-config.jpg',
             ],
         ];
@@ -340,12 +340,12 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
             'tid_importantHint' => null,
             'created' => '0000-00-00 00:00:00',
             'pictureUrl' => null,
-            'recoPictureUrl' => '/images/upload/content/images/products/flyer/'.
+            'recoPictureUrl' => '/images/upload/content/images/products/flyer/' .
                 'countries/flyeralarm-flyer-klassiker-583x335-config-hu.jpg',
             '_language' => 'de',
             '_name' => 'Flyer Klassiker',
             '_description' => 'some HTML will go here',
-            '_image' => '/images/upload/content/images/products/flyer/'.
+            '_image' => '/images/upload/content/images/products/flyer/' .
                 'config/flyeralarm-flyer-klassiker-240x200-config.jpg',
             '_technicalDetail' => '',
             '_seotext' => 'some seo text',
@@ -1367,6 +1367,5 @@ class IntegrationTest extends \PHPUnit\Framework\TestCase
             48.31,
             $grossPrice
         );
-
     }
 }

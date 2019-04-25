@@ -262,12 +262,14 @@ class Api
 
     /**
      * @param $quantityId
+     * @param $width
+     * @param $height
      * @return bool
      * @internal param Product $product
      */
-    private function addProductToCart($quantityId)
+    private function addProductToCart($quantityId, $width, $height)
     {
-        $result = $this->api_client->addProductToCart((int) $quantityId);
+        $result = $this->api_client->addProductToCart((int) $quantityId, $width, $height);
 
         return $result;
     }
@@ -281,7 +283,7 @@ class Api
     {
         try {
             $this->login();
-            $result = $this->addProductToCart($product->getQuantityId());
+            $result = $this->addProductToCart($product->getQuantityId(), null, null);
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get ShippingTypes.", 5116, $e);
         }
@@ -299,7 +301,7 @@ class Api
     {
         try {
             $this->login();
-            $this->addProductToCart($order->getQuantityId());
+            $this->addProductToCart($order->getQuantityId(), $order->getCustomWidth(), $order->getCustomHeight());
             $this->addShippingTypeToProduct($order->getShippingTypeId());
             $array = $this->api_client->getAvailableProductOptions();
         } catch (\Exception $e) {
@@ -344,7 +346,7 @@ class Api
     {
         try {
             $this->login();
-            $this->addProductToCart($order->getQuantityId());
+            $this->addProductToCart($order->getQuantityId(), $order->getCustomWidth(), $order->getCustomHeight());
             $return = $this->api_client->getAvailableShippingOptions();
         } catch (\Exception $e) {
             throw new SoapCallException("FLYERALARM API Call: Unable to get available ShippingOptions.", 5118, $e);
@@ -389,7 +391,7 @@ class Api
     {
         try {
             $this->login();
-            $this->addProductToCart($order->getQuantityId());
+            $this->addProductToCart($order->getQuantityId(), $order->getCustomWidth(), $order->getCustomHeight());
             $this->addShippingTypeToProduct($order->getShippingTypeId());
             $this->addProductOptions($order->getProductOptionsArray());
             $this->addShippingOptions(
